@@ -30,7 +30,7 @@ const BleUuid serviceUuid("6E400000-B5A3-F393-E0A9-E50E24DCCA9E");
 // BLE Characteristics UUIDs
 //BleCharacteristic characteristicFirstName("First Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A8A"), serviceUuid);
 //BleCharacteristic characteristicLastName("Last Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A90"), serviceUuid);
-BleCharacteristic characteristicString("Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A3D"), serviceUuid);
+BleCharacteristic characteristicNameOut("Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A3D"), serviceUuid);
 BleCharacteristic characteristicID("User Index", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A9A"), serviceUuid);  // 0xFF for "Unknown User"
 BleCharacteristic characteristicAccess("Access Enabled", BleCharacteristicProperty::NOTIFY, BleUuid("6E400001-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
 BleCharacteristic characteristicB("b", BleCharacteristicProperty::NOTIFY, BleUuid("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
@@ -50,6 +50,13 @@ bool connectionFlag = false;
 void onDataReceived(const uint8_t* data, size_t len, const BlePeerDevice& peer, void* context) {
   // when data for myCharacteristic is recieved
   RGB.color(100, 50, 100);
+  
+  for (size_t i=0; i<len; i++) {
+    Serial.write(data[i]);
+  }
+  Serial.write('\n');
+
+  
 }
 
 void setup() {

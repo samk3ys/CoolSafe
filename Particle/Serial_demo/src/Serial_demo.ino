@@ -7,7 +7,7 @@
 
 #include "Particle.h"
 #include "Serial2/Serial2.h"
-#include <string.h>
+//#include <string.h>
 
 SYSTEM_MODE(MANUAL);
 
