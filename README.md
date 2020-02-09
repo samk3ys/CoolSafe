@@ -1,4 +1,4 @@
-#Cool Safe
+##Cool Safe
 UKY capstone project
 
 ECE 490 / 491 - 2 Semester Senior Design - Fall 2019 thru Spring 2020
