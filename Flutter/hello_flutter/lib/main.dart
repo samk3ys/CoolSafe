@@ -54,15 +54,25 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _connected = false;
   Color bleColor = Colors.grey;
   String bleMessage = 'Looking for connection...';
-  String address = 'bec1dd35-fce6-47e7-ac75-9e404872bcc1';
+  String address = '6E400000-B5A3-F393-E0A9-E50E24DCCA9E';
 
   void _connectBLE() {
-    
+    // Discover services
+    List<BluetoothService> services = await device.discoverServices();
+    services.forEach((service) {
+        // do something with service
+        if (service.uuid == address) {
+          // Connect to the device
+          await device.connect();
+          _connected = true;
+        }
+    });
 
     setState(() {
-      _connected = true;
-      bleColor = Colors.blue;
-      bleMessage = 'Connected!';
+      if (_connected == true) {
+        bleColor = Colors.blue;
+        bleMessage = 'Connected!';
+      }
     });
   }
 
@@ -100,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
             FlatButton(
               color: Colors.cyan,
               splashColor: Colors.cyanAccent,
-              child: Text('\nFake a connection\n',
+              child: Text('\nLook for a connection\n',
                 style: Theme.of(context).textTheme.display1,
               ), 
               onPressed: () {
@@ -144,6 +154,15 @@ class _DemoPageState extends State<DemoPage> {
     setState(() {
       _counter = command;
     });
+    
+    // Reads characteristics
+    var characteristics = service.characteristics;
+    for(BluetoothCharacteristic c in characteristics) {
+        List<int> value = await c.read();
+        print(value);
+    }
+    // Writes to a characteristic
+    await c.write([0x12, 0x34])
   }
 
   void _addUser() {
