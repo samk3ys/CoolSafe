@@ -58,13 +58,31 @@ bool connectionFlag = false;
 
 void onDataReceived(const uint8_t* data, size_t len, const BlePeerDevice& peer, void* context) {
   // when data for myCharacteristic is recieved
-  RGB.color(100, 50, 100);
+  //RGB.color(100, 50, 100);
   
-  for (size_t i=0; i<len; i++) {
-    Serial.write(data[i]);
-  }
-  Serial.write('\n');
+  const char * dataChars = (char *) data;
+  Serial.write(dataChars);
 
+
+  char operationID = data[0];
+  /*uint8_t operationID = 0;      // default to No operation
+  for (size_t i=0; i<1; i++) {  // first byte
+    operationID = data[i];
+  }*/
+
+  switch (operationID) {
+    case 'a':
+      RGB.color(100, 0, 0);
+      break;
+    case 'b':
+      RGB.color(0, 100, 0);
+      break;
+    case 'c':
+      RGB.color(0, 0, 100);
+      break;
+    default:
+      RGB.color(255, 255, 0);
+  }
   
 }
 
@@ -96,6 +114,9 @@ void setup() {
   pinMode(smdLED, OUTPUT);
   digitalWrite(smdLED, HIGH);
 
+  // Check EEPROM
+  Serial.print("EEPROM Available: ");
+  Serial.println(EEPROM.length());
 }
 
 void loop() {
