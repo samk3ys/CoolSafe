@@ -2,7 +2,8 @@
 //       THIS IS A GENERATED FILE - DO NOT EDIT       //
 /******************************************************/
 
-#line 1 "a:/Documents/Programming/Particle/Serial_demo/src/Serial_demo.ino"
+#include "application.h"
+#line 1 "a:/Documents/Programming/GitHub/CoolSafe/Particle/Serial_demo/src/Serial_demo.ino"
 /*
  * Project Serial_demo
  * Description:
@@ -10,22 +11,26 @@
  * Date:
  */
 
-#include "Particle.h"
-#include "Serial2/Serial2.h"
-#include <string.h>
+//#include "Particle.h"
+//#include "Serial2/Serial2.h"  // Header file necessary for Serial 2 (pins D4 & D5)
+#include "FPS_GT511C3_Xenon.h"
 
 void setup();
 void loop();
-#line 12 "a:/Documents/Programming/Particle/Serial_demo/src/Serial_demo.ino"
-SYSTEM_MODE(MANUAL);
+#line 12 "a:/Documents/Programming/GitHub/CoolSafe/Particle/Serial_demo/src/Serial_demo.ino"
+FPS_GT511C3 fps;  // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
 
-String input = "n/a";
+SYSTEM_MODE(MANUAL);
 
 void setup() {
 
   Serial.begin(); // defaults to 9600 baud rate
   Serial1.begin(9600);  // Rx (pin 14) & Tx (pin 15) on Particle Xenon
-  Serial2.begin(9600);  // D5 (Rx / pin 21) & D4 (Tx / pin 20) on Particle Xenon
+  //Serial2.begin(9600);  // D5 (Rx / pin 21) & D4 (Tx / pin 20) on Particle Xenon
+
+  // Set up fingerprint scanner
+  fps.UseSerialDebug = true; // so you can see the messages in the serial debug screen
+	fps.Open(); //send serial command to initialize fps
 
   Serial.println("Press RETURN to enter a message.");
 
@@ -59,6 +64,11 @@ void loop() {
     Serial.println(message);
 
   }
-  delay(100);
+  
+  // FPS Blink LED Test
+	fps.SetLED(true); // turn on the LED inside the fps
+	delay(500);
+	fps.SetLED(false);// turn off the LED inside the fps
+  delay(500);
 
 }

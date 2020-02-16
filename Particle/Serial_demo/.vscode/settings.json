@@ -6,6 +6,5 @@
         "*.ino": "cpp"
     },
     "particle.firmwareVersion": "1.4.4",
-    "particle.targetPlatform": "xenon",
-    "particle.targetDevice": ""
+    "particle.targetPlatform": "xenon"
 }
