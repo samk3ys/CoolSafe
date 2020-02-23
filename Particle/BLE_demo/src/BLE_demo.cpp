@@ -2,7 +2,7 @@
 //       THIS IS A GENERATED FILE - DO NOT EDIT       //
 /******************************************************/
 
-#line 1 "c:/Users/SAM-Laptop/Documents/Programming/CoolSafe/Particle/BLE_demo/src/BLE_demo.ino"
+#line 1 "a:/Documents/Programming/GitHub/CoolSafe/Particle/BLE_demo/src/BLE_demo.ino"
 /*
  * Project BLE demo
  * Description: demonstration of using BLE to communicate data between MCU (xenon) and an app
@@ -17,7 +17,7 @@ uint8_t dataToHex(uint8_t a, uint8_t b);
 void onDataReceived(const uint8_t* data, size_t len, const BlePeerDevice& peer, void* context);
 void setup();
 void loop();
-#line 11 "c:/Users/SAM-Laptop/Documents/Programming/CoolSafe/Particle/BLE_demo/src/BLE_demo.ino"
+#line 11 "a:/Documents/Programming/GitHub/CoolSafe/Particle/BLE_demo/src/BLE_demo.ino"
 SYSTEM_MODE(MANUAL);    // avoid registration
 
 // Data formatting //////////////////////////////////////////////////////
@@ -42,11 +42,11 @@ const BleUuid serviceUuid("6E400000-B5A3-F393-E0A9-E50E24DCCA9E");
 //BleCharacteristic characteristicLastName("Last Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A90"), serviceUuid);
 BleCharacteristic characteristicNameOut("Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A3D"), serviceUuid);
 BleCharacteristic characteristicID("User Index", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A9A"), serviceUuid);  // 0xFF for "Unknown User"
-BleCharacteristic characteristicAccess("Access Enabled", BleCharacteristicProperty::NOTIFY, BleUuid("6E400001-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
-BleCharacteristic characteristicB("b", BleCharacteristicProperty::NOTIFY, BleUuid("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
-BleCharacteristic characteristicC("c", BleCharacteristicProperty::NOTIFY, BleUuid("6E400003-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
-const char* myWriteUUID = "6E400004-B5A3-F393-E0A9-E50E24DCCA9E";
+const char* myWriteUUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
 BleCharacteristic myCharacteristic("myCharacteristic", BleCharacteristicProperty::WRITE_WO_RSP, myWriteUUID, serviceUuid, onDataReceived, (void*)myWriteUUID);
+BleCharacteristic characteristicAccess("Access Enabled", BleCharacteristicProperty::NOTIFY, BleUuid("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
+BleCharacteristic characteristicB("b", BleCharacteristicProperty::NOTIFY, BleUuid("6E400003-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
+BleCharacteristic characteristicC("c", BleCharacteristicProperty::NOTIFY, BleUuid("6E400004-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
 
 bool connectionFlag = false;
 
@@ -166,6 +166,9 @@ void onDataReceived(const uint8_t* data, size_t len, const BlePeerDevice& peer, 
   
   const char * dataChars = (char *) data;
   Serial.write(dataChars);
+  Serial.write('\n');
+  
+  // Hex code in to change LED color
   uint8_t red = dataToHex(data[0], data[1]);
   uint8_t green = dataToHex(data[2], data[3]);
   uint8_t blue = dataToHex(data[4], data[5]);
@@ -197,11 +200,11 @@ void setup() {
   
   // BLE ///////////////////////////////////
   // Attach characteristics
-  BLE.addCharacteristic(characteristicAccess);
-	BLE.addCharacteristic(characteristicB);
-	BLE.addCharacteristic(characteristicC);
   BLE.addCharacteristic(myCharacteristic);
   myCharacteristic.onDataReceived(onDataReceived, NULL);
+  BLE.addCharacteristic(characteristicAccess);
+	//BLE.addCharacteristic(characteristicB);
+	//BLE.addCharacteristic(characteristicC);
 
   // Start advertising service
   BleAdvertisingData adverData;
@@ -219,12 +222,15 @@ void setup() {
 
   // On-board LED
   pinMode(smdLED, OUTPUT);
-  digitalWrite(smdLED, HIGH);
+  //digitalWrite(smdLED, HIGH);
 
   // Check EEPROM
   Serial.print("EEPROM Available: ");
   Serial.println(EEPROM.length());
 }
+
+
+uint8_t a = (uint8_t) 1;  // data sent over characteristic
 
 void loop() {
   
@@ -236,15 +242,16 @@ void loop() {
           Serial.println("Bluetooth Connected!");
           connectionFlag = true;
         }
-
-        uint8_t a = (uint8_t) 1;
+        
+        // update data
+        a++; 
         characteristicAccess.setValue(a);
 
         uint8_t b = (uint8_t) 2;
-        characteristicB.setValue(b);
+        //characteristicB.setValue(b);
 
         uint8_t c = (uint8_t) 3;
-        characteristicC.setValue(c);
+        //characteristicC.setValue(c);
     }
     else {  // No Bluetooth connection
       if (connectionFlag == true) {

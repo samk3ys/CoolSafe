@@ -1,4 +1,4 @@
-a:/Documents/Programming/Particle/BLE_demo/target/1.4.4/xenon//obj/./src/user_export.o: \
+a:/Documents/Programming/GitHub/CoolSafe/Particle/BLE_demo/target/1.4.4/xenon//obj/./src/user_export.o: \
  src/user_export.c \
  ../../../modules/shared/nRF52840/inc/user_part_export.c \
  ../../../modules/shared/nRF52840/inc/module_user_init.h \
