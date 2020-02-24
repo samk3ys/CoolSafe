@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 void main() => runApp(MyApp());
 
