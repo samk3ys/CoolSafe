@@ -16,15 +16,20 @@ class HomeBar extends StatelessWidget {
       child: Row(
         // <Widget> is the type of items in the list.
         children: <Widget>[
-          IconButton(
+          /*IconButton(
             icon: Icon(Icons.arrow_back),
             tooltip: 'Return',
             onPressed: null,
-          ),
+          ),*/
           // Expanded expands its child to fill the available space.
           Expanded(
             child: title,
           ),
+          /*IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'Settings',
+            onPressed: null,
+          ),*/
         ],
       ),
     );
@@ -57,6 +62,11 @@ class NotHomeBar extends StatelessWidget {
           Expanded(
             child: title,
           ),
+          /*IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'Return',
+            onPressed: null,
+          ),*/
         ],
       ),
     );
@@ -80,7 +90,7 @@ class HomePage extends StatelessWidget {
           ),
           MaterialButton(
             child: Text('Add New Fingerprint'),
-            onPressed: null,
+            onPressed: () => AddUser(),
           ),
           MaterialButton(
             child: Text('View Permissions'),
@@ -139,42 +149,44 @@ List<Widget> usersList(BuildContext context) {
 }*/ //irrelevant now... was trying a round-about way to do something simple
 
 class UsersPermissions extends StatelessWidget {
-  final List<String> users = ['Sam', "Shae", "Steven", "Sylvester", "Tylor"];
+  List<String> users = ['Sam', "Shae", "Steven", "Sylvester", "Tylor"];
   //retrieve user list through the BLE
 
   @override
   Widget build(BuildContext context) {
     // Material is a conceptual piece of paper on which the UI appears.
-    return Material(
+    return Scaffold(
       // Column is a vertical, linear layout.
-      child: Column(
+      body: Column(
         children: <Widget>[
           NotHomeBar(
             title: Text(
               'Users Permissions',
-              style: Theme
-                  .of(context)
-                  .primaryTextTheme
-                  .title,
+              style: Theme.of(context).primaryTextTheme.title,
             ),
           ),
-          for (String nameIt in users) MaterialButton(
-            child: Text(nameIt),
+          for (int id = 0; id < users.length; id++) MaterialButton(
+            child: Text(users[id]),
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => IndivUser(nameIt))
+                  MaterialPageRoute(builder: (context) => IndivUser(users[id], id))
               );
             },
           ), // if not working try to get block of commented code above to work
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => AddUser(),
       ),
     );
   }
 } //Permissions page: button for each registered fingerprint/user
 
 class IndivUser extends StatelessWidget {
-  IndivUser(this.nameIt);
+  IndivUser(this.nameIt, this.id);
+  final int id;
   final String nameIt;
   @override
   Widget build(BuildContext context) {
@@ -191,18 +203,18 @@ class IndivUser extends StatelessWidget {
           ),
           MaterialButton(
             child: Text('Edit'),
-            onPressed: null,
+            onPressed: () => EditUser(),
             //send edit signal through BLE
             //edit name in array
           ),
           MaterialButton(
             child: Text('Disable/Enable'),
-            onPressed: null,
+            onPressed: () => AbleUser(),
             //send disable/enable signal through BLE
           ),
           MaterialButton(
             child: Text('Delete'),
-            onPressed: null,
+            onPressed: () => DeleteUser(),
             //send delete signal through BLE
             //remove name in array
           ),
@@ -211,6 +223,28 @@ class IndivUser extends StatelessWidget {
     );
   }
 } //Page for an individual user: button to edit, disable/enable permissions, and delete
+
+//Use signal format ID/OPERATION/AUTHORIZED/NAME
+
+void AddUser(){
+  null;
+  //AddUser()
+}
+
+void EditUser(){
+  null;
+  //EditUser()
+}
+
+void AbleUser(){
+  null;
+  //AbleUser()
+}
+
+void DeleteUser(){
+  null;
+  //DeleteUser()
+}
 
 void main() {
   runApp(MaterialApp(
