@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.0">
+<eagle version="9.5.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -216,91 +216,6 @@
 <technology name="">
 <attribute name="SPICEGROUND" value=""/>
 <attribute name="_EXTERNAL_" value=""/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
-<library name="dc-dc-converter" urn="urn:adsk.eagle:library:208">
-<description>&lt;b&gt;DC-DC Converters&lt;/b&gt;&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
-<packages>
-<package name="SIP3" urn="urn:adsk.eagle:footprint:12302/1" library_version="2">
-<description>&lt;b&gt;INNOLINE DC/DC-Converter&lt;/b&gt; 1.0 AMP SIP3 Single Output&lt;p&gt;
-Source: &lt;a href="http://www.mikrocontroller.net/attachment/150645/157764-da-01-en-DC_DC_WANDLER_R_78C5_0_1_0.pdf"&gt; Data sheet &lt;/a&gt;</description>
-<pad name="1" x="-2.54" y="0" drill="1" diameter="1.6764"/>
-<pad name="2" x="0" y="0" drill="1" diameter="1.6764"/>
-<pad name="3" x="2.54" y="0" drill="1" diameter="1.6764"/>
-<wire x1="-5.6968" y1="-1.9" x2="5.6968" y2="-1.9" width="0.2032" layer="21"/>
-<wire x1="5.6968" y1="-1.9" x2="5.6968" y2="6.44" width="0.2032" layer="21"/>
-<wire x1="5.6968" y1="6.44" x2="-5.6968" y2="6.44" width="0.2032" layer="21"/>
-<wire x1="-5.6968" y1="6.44" x2="-5.6968" y2="-1.9" width="0.2032" layer="21"/>
-<text x="-5.715" y="-3.81" size="1.27" layer="25">&gt;NAME</text>
-<text x="-5.08" y="2.54" size="1.27" layer="27">&gt;VALUE</text>
-<circle x="-5.08" y="-1.27" radius="0.406109375" width="0" layer="21"/>
-</package>
-</packages>
-<packages3d>
-<package3d name="SIP3" urn="urn:adsk.eagle:package:12318/1" type="box" library_version="2">
-<description>INNOLINE DC/DC-Converter 1.0 AMP SIP3 Single Output
-Source:  Data sheet </description>
-<packageinstances>
-<packageinstance name="SIP3"/>
-</packageinstances>
-</package3d>
-</packages3d>
-<symbols>
-<symbol name="DCDC-3PIN" urn="urn:adsk.eagle:symbol:12301/1" library_version="2">
-<wire x1="-10.16" y1="3.81" x2="10.16" y2="3.81" width="0.4064" layer="94"/>
-<wire x1="10.16" y1="3.81" x2="10.16" y2="-5.08" width="0.4064" layer="94"/>
-<wire x1="10.16" y1="-5.08" x2="-10.16" y2="-5.08" width="0.4064" layer="94"/>
-<wire x1="-10.16" y1="-5.08" x2="-10.16" y2="3.81" width="0.4064" layer="94"/>
-<text x="-10.16" y="5.08" size="1.778" layer="95">&gt;NAME</text>
-<text x="0" y="5.08" size="1.778" layer="96">&gt;VALUE</text>
-<text x="-8.636" y="1.397" size="1.27" layer="94">DC/DC CONVERTER</text>
-<text x="-2.54" y="-3.81" size="1.524" layer="95">GND</text>
-<pin name="VIN" x="-12.7" y="0" length="short" direction="pas"/>
-<pin name="VOUT" x="12.7" y="0" length="short" direction="pas" rot="R180"/>
-<pin name="GND" x="0" y="-7.62" visible="pad" length="short" direction="pas" rot="R90"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="R-78C*-1.0" urn="urn:adsk.eagle:component:12328/2" prefix="DC" library_version="2">
-<description>&lt;b&gt;INNOLINE DC/DC-Converter&lt;/b&gt; 1.0 AMP SIP3 Single Output&lt;p&gt;
-Source: &lt;a href="http://www.mikrocontroller.net/attachment/150645/157764-da-01-en-DC_DC_WANDLER_R_78C5_0_1_0.pdf"&gt; Data sheet &lt;/a&gt;</description>
-<gates>
-<gate name="G$1" symbol="DCDC-3PIN" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="SIP3">
-<connects>
-<connect gate="G$1" pin="GND" pad="2"/>
-<connect gate="G$1" pin="VIN" pad="1"/>
-<connect gate="G$1" pin="VOUT" pad="3"/>
-</connects>
-<package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:12318/1"/>
-</package3dinstances>
-<technologies>
-<technology name="1.8">
-<attribute name="POPULARITY" value="0" constant="no"/>
-</technology>
-<technology name="12">
-<attribute name="POPULARITY" value="0" constant="no"/>
-</technology>
-<technology name="15">
-<attribute name="POPULARITY" value="0" constant="no"/>
-</technology>
-<technology name="3.3">
-<attribute name="POPULARITY" value="0" constant="no"/>
-</technology>
-<technology name="5.0">
-<attribute name="POPULARITY" value="0" constant="no"/>
-</technology>
-<technology name="9.0">
-<attribute name="POPULARITY" value="0" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -7765,6 +7680,46 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <pad name="P$1" x="1.27" y="1.27" drill="0.65"/>
 <pad name="P$2" x="3.81" y="1.27" drill="0.65"/>
 </package>
+<package name="DC-DC-STEP-DOWN-MP1584">
+<description>&lt;b&gt;DC/DC Step-Down Regulator&lt;/b&gt; based on &lt;b&gt;MP1584&lt;/b&gt; chip</description>
+<wire x1="-11.049" y1="8.382" x2="11.049" y2="8.382" width="0.127" layer="21"/>
+<wire x1="11.049" y1="8.382" x2="11.049" y2="-8.382" width="0.127" layer="21"/>
+<wire x1="11.049" y1="-8.382" x2="-11.049" y2="-8.382" width="0.127" layer="21"/>
+<wire x1="-11.049" y1="-8.382" x2="-11.049" y2="8.382" width="0.127" layer="21"/>
+<pad name="IN-.1" x="-9.271" y="6.604" drill="1.2" diameter="2"/>
+<text x="0" y="9.525" size="1.27" layer="25" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-9.525" size="1.27" layer="27" align="top-center">&gt;VALUE</text>
+<text x="-9.271" y="0" size="1.524" layer="21" rot="R90" align="center">IN</text>
+<text x="9.271" y="0" size="1.524" layer="21" rot="R90" align="center">OUT</text>
+<wire x1="-6.985" y1="-5.969" x2="-6.985" y2="-4.699" width="0.254" layer="21"/>
+<wire x1="-6.35" y1="5.334" x2="-7.62" y2="5.334" width="0.254" layer="21"/>
+<wire x1="-7.62" y1="-5.334" x2="-6.35" y2="-5.334" width="0.254" layer="21"/>
+<pad name="IN+.2" x="-9.271" y="-6.604" drill="1.2" diameter="2" shape="square"/>
+<pad name="OUT-.1" x="9.271" y="6.604" drill="1.2" diameter="2"/>
+<pad name="IN-.2" x="-9.271" y="4.064" drill="1.2" diameter="2"/>
+<pad name="OUT-.2" x="9.271" y="4.064" drill="1.2" diameter="2"/>
+<pad name="IN+.1" x="-9.271" y="-4.064" drill="1.2" diameter="2" shape="square"/>
+<pad name="OUT+.2" x="9.271" y="-6.604" drill="1.2" diameter="2" shape="square"/>
+<pad name="OUT+.1" x="9.271" y="-4.064" drill="1.2" diameter="2" shape="square"/>
+<wire x1="6.985" y1="-5.969" x2="6.985" y2="-4.699" width="0.254" layer="21"/>
+<wire x1="7.62" y1="5.334" x2="6.35" y2="5.334" width="0.254" layer="21"/>
+<wire x1="6.35" y1="-5.334" x2="7.62" y2="-5.334" width="0.254" layer="21"/>
+</package>
+<package name="JST" urn="urn:adsk.eagle:footprint:7620/1" locally_modified="yes">
+<description>&lt;b&gt;ZH CONNECTOR&lt;/b&gt; Side entry type, 1.5 mm, 4 pin 1 row&lt;p&gt;
+Source: http://www.jst.com .. eZH.pdf</description>
+<wire x1="3.65" y1="-4.5" x2="-3.65" y2="-4.5" width="0.2032" layer="21"/>
+<wire x1="-3.65" y1="-4.5" x2="-3.65" y2="1.275" width="0.2032" layer="21"/>
+<wire x1="3.65" y1="1.275" x2="3.65" y2="-4.5" width="0.2032" layer="21"/>
+<wire x1="3.65" y1="1.275" x2="-3.65" y2="1.275" width="0.2032" layer="21"/>
+<wire x1="-3.55" y1="0.325" x2="3.55" y2="0.325" width="0.2032" layer="51"/>
+<pad name="1" x="-2.25" y="0" drill="0.7" diameter="1.1"/>
+<pad name="2" x="-0.75" y="0" drill="0.7" diameter="1.1"/>
+<pad name="3" x="0.75" y="0" drill="0.7" diameter="1.1"/>
+<pad name="4" x="2.25" y="0" drill="0.7" diameter="1.1"/>
+<text x="-3.75" y="1.5" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3.81" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="ARGON/BORON/XENON">
@@ -7837,6 +7792,35 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <vertex x="5.588" y="6.096"/>
 </polygon>
 <text x="6.858" y="8.636" size="1.778" layer="95">&gt;NAME</text>
+</symbol>
+<symbol name="DC-DC-STEP-DOWN-MP1584">
+<description>&lt;b&gt;DC/DC Step-Down Regulator&lt;/b&gt; based on &lt;b&gt;MP1584&lt;/b&gt; chip</description>
+<pin name="IN+.2" x="-17.78" y="-5.08" visible="pin" length="middle"/>
+<pin name="IN-.1" x="-17.78" y="5.08" visible="pin" length="middle"/>
+<pin name="OUT+.2" x="17.78" y="-5.08" visible="pin" length="middle" rot="R180"/>
+<pin name="OUT-.1" x="17.78" y="5.08" visible="pin" length="middle" rot="R180"/>
+<wire x1="-12.7" y1="10.16" x2="12.7" y2="10.16" width="0.254" layer="94"/>
+<wire x1="12.7" y1="10.16" x2="12.7" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-10.16" x2="-12.7" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-10.16" x2="-12.7" y2="10.16" width="0.254" layer="94"/>
+<text x="-12.7" y="15.24" size="1.778" layer="95">&gt;NAME</text>
+<text x="-12.7" y="12.7" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="IN-.2" x="-17.78" y="2.54" visible="pin" length="middle"/>
+<pin name="IN+.1" x="-17.78" y="-2.54" visible="pin" length="middle"/>
+<pin name="OUT-.2" x="17.78" y="2.54" visible="pin" length="middle" rot="R180"/>
+<pin name="OUT+.1" x="17.78" y="-2.54" visible="pin" length="middle" rot="R180"/>
+</symbol>
+<symbol name="FPS">
+<pin name="TX" x="-27.94" y="5.08" length="middle"/>
+<pin name="RX" x="-27.94" y="10.16" length="middle"/>
+<pin name="GND" x="-27.94" y="0" length="middle"/>
+<pin name="VCC" x="-27.94" y="-5.08" length="middle"/>
+<wire x1="-22.86" y1="12.7" x2="-22.86" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-22.86" y1="12.7" x2="0" y2="12.7" width="0.254" layer="94"/>
+<wire x1="0" y1="12.7" x2="0" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="0" y1="-7.62" x2="-22.86" y2="-7.62" width="0.254" layer="94"/>
+<rectangle x1="-12.7" y1="-5.08" x2="-2.54" y2="10.16" layer="94"/>
+<text x="-17.78" y="15.24" size="1.778" layer="95">&gt;NAME</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -7924,6 +7908,51 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <connects>
 <connect gate="G$1" pin="P$1" pad="P$1"/>
 <connect gate="G$1" pin="P$2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="DC-DC-STEP-DOWN-MP1584">
+<description>&lt;b&gt;DC/DC Step-Down Regulator&lt;/b&gt; based on &lt;b&gt;MP1584&lt;/b&gt; chip
+&lt;p&gt;&lt;b&gt;MP1584&lt;/b&gt; datasheet available here:&lt;br /&gt;
+&lt;a href="http://www.haoyuelectronics.com/Attachment/MP1584/MP1584.pdf"&gt;http://www.haoyuelectronics.com/Attachment/MP1584/MP1584.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;&lt;a href="http://www.ebay.com/sch/mp1584+module"&gt;Click here to find device on ebay.com&lt;/a&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="photo" src="http://www.diymodules.org/img/device-photo.php?name=DC-DC-STEP-DOWN-MP1584"&gt;&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="DC-DC-STEP-DOWN-MP1584" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="DC-DC-STEP-DOWN-MP1584">
+<connects>
+<connect gate="G$1" pin="IN+.1" pad="IN+.1"/>
+<connect gate="G$1" pin="IN+.2" pad="IN+.2"/>
+<connect gate="G$1" pin="IN-.1" pad="IN-.1"/>
+<connect gate="G$1" pin="IN-.2" pad="IN-.2"/>
+<connect gate="G$1" pin="OUT+.1" pad="OUT+.1"/>
+<connect gate="G$1" pin="OUT+.2" pad="OUT+.2"/>
+<connect gate="G$1" pin="OUT-.1" pad="OUT-.1"/>
+<connect gate="G$1" pin="OUT-.2" pad="OUT-.2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="FPS">
+<gates>
+<gate name="G$1" symbol="FPS" x="35.56" y="2.54"/>
+</gates>
+<devices>
+<device name="" package="JST">
+<connects>
+<connect gate="G$1" pin="GND" pad="3"/>
+<connect gate="G$1" pin="RX" pad="2"/>
+<connect gate="G$1" pin="TX" pad="1"/>
+<connect gate="G$1" pin="VCC" pad="4"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -12473,129 +12502,6 @@ naming: grid - package width</description>
 </deviceset>
 </devicesets>
 </library>
-<library name="con-jst" urn="urn:adsk.eagle:library:156">
-<description>&lt;b&gt;J.S.T. Connectors&lt;/b&gt;&lt;p&gt;
-J.S.T Mfg Co.,Ltd.&lt;p&gt;
-http://www.jst-mfg.com&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
-<packages>
-<package name="B4B-ZR" urn="urn:adsk.eagle:footprint:7619/1" library_version="2">
-<description>&lt;b&gt;ZH CONNECTOR&lt;/b&gt;  Top entry type, 1.5 mm, 4 pin 1 row&lt;p&gt;
-Source: http://www.jst.com .. eZH.pdf</description>
-<wire x1="3.65" y1="-2.1" x2="-3.65" y2="-2.1" width="0.2032" layer="21"/>
-<wire x1="-3.65" y1="-2.1" x2="-3.65" y2="1.2" width="0.2032" layer="21"/>
-<wire x1="3.65" y1="1.2" x2="3.65" y2="-2.1" width="0.2032" layer="21"/>
-<wire x1="3.65" y1="1.2" x2="-3.65" y2="1.2" width="0.2032" layer="21"/>
-<wire x1="-3.25" y1="1" x2="-3.25" y2="1.15" width="0.2032" layer="21"/>
-<wire x1="-3.25" y1="1" x2="-2.75" y2="1" width="0.2032" layer="21"/>
-<wire x1="-2.75" y1="1" x2="-2.75" y2="1.15" width="0.2032" layer="21"/>
-<pad name="1" x="-2.25" y="0" drill="0.7" diameter="1.1"/>
-<pad name="2" x="-0.75" y="0" drill="0.7" diameter="1.1"/>
-<pad name="3" x="0.75" y="0" drill="0.7" diameter="1.1"/>
-<pad name="4" x="2.25" y="0" drill="0.7" diameter="1.1"/>
-<text x="-3.75" y="1.5" size="1.27" layer="25">&gt;NAME</text>
-<text x="-3.75" y="-3.5" size="1.27" layer="27">&gt;VALUE</text>
-</package>
-<package name="S4B-ZR" urn="urn:adsk.eagle:footprint:7620/1" library_version="2">
-<description>&lt;b&gt;ZH CONNECTOR&lt;/b&gt; Side entry type, 1.5 mm, 4 pin 1 row&lt;p&gt;
-Source: http://www.jst.com .. eZH.pdf</description>
-<wire x1="3.65" y1="-4.5" x2="-3.65" y2="-4.5" width="0.2032" layer="21"/>
-<wire x1="-3.65" y1="-4.5" x2="-3.65" y2="1.275" width="0.2032" layer="21"/>
-<wire x1="3.65" y1="1.275" x2="3.65" y2="-4.5" width="0.2032" layer="21"/>
-<wire x1="3.65" y1="1.275" x2="-3.65" y2="1.275" width="0.2032" layer="21"/>
-<wire x1="-3.55" y1="0.325" x2="3.55" y2="0.325" width="0.2032" layer="51"/>
-<pad name="1" x="-2.25" y="0" drill="0.7" diameter="1.1"/>
-<pad name="2" x="-0.75" y="0" drill="0.7" diameter="1.1"/>
-<pad name="3" x="0.75" y="0" drill="0.7" diameter="1.1"/>
-<pad name="4" x="2.25" y="0" drill="0.7" diameter="1.1"/>
-<text x="-3.75" y="1.5" size="1.27" layer="25">&gt;NAME</text>
-<text x="-3.81" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
-</package>
-</packages>
-<packages3d>
-<package3d name="B4B-ZR" urn="urn:adsk.eagle:package:7642/1" type="box" library_version="2">
-<description>ZH CONNECTOR  Top entry type, 1.5 mm, 4 pin 1 row
-Source: http://www.jst.com .. eZH.pdf</description>
-<packageinstances>
-<packageinstance name="B4B-ZR"/>
-</packageinstances>
-</package3d>
-<package3d name="S4B-ZR" urn="urn:adsk.eagle:package:7641/1" type="box" library_version="2">
-<description>ZH CONNECTOR Side entry type, 1.5 mm, 4 pin 1 row
-Source: http://www.jst.com .. eZH.pdf</description>
-<packageinstances>
-<packageinstance name="S4B-ZR"/>
-</packageinstances>
-</package3d>
-</packages3d>
-<symbols>
-<symbol name="PM-VN" urn="urn:adsk.eagle:symbol:7617/1" library_version="2">
-<wire x1="0.254" y1="0" x2="-1.524" y2="0" width="0.4064" layer="94"/>
-<text x="1.016" y="-0.762" size="1.524" layer="95">&gt;NAME</text>
-<text x="-4.064" y="1.524" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="1" x="-5.08" y="0" visible="off" length="middle" direction="pas"/>
-</symbol>
-<symbol name="PM-N" urn="urn:adsk.eagle:symbol:7618/1" library_version="2">
-<wire x1="0.254" y1="0" x2="-1.524" y2="0" width="0.4064" layer="94"/>
-<text x="1.016" y="-0.762" size="1.524" layer="95">&gt;NAME</text>
-<pin name="1" x="-5.08" y="0" visible="off" length="middle" direction="pas"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="?4B-ZR" urn="urn:adsk.eagle:component:7666/2" prefix="X" library_version="2">
-<description>&lt;b&gt;ZH CONNECTOR&lt;/b&gt; 1.5 mm, 4 pin 1 row&lt;p&gt;
-Source: http://www.jst.com .. eZH.pdf</description>
-<gates>
-<gate name="-1" symbol="PM-VN" x="0" y="0" addlevel="always"/>
-<gate name="-2" symbol="PM-N" x="0" y="-2.54" addlevel="always"/>
-<gate name="-3" symbol="PM-N" x="0" y="-5.08" addlevel="always"/>
-<gate name="-4" symbol="PM-N" x="0" y="-7.62" addlevel="always"/>
-</gates>
-<devices>
-<device name="B" package="B4B-ZR">
-<connects>
-<connect gate="-1" pin="1" pad="1"/>
-<connect gate="-2" pin="1" pad="2"/>
-<connect gate="-3" pin="1" pad="3"/>
-<connect gate="-4" pin="1" pad="4"/>
-</connects>
-<package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:7642/1"/>
-</package3dinstances>
-<technologies>
-<technology name="">
-<attribute name="MF" value="FARNELL" constant="no"/>
-<attribute name="MPN" value="B4B-ZR(LF)(SN)" constant="no"/>
-<attribute name="OC_FARNELL" value="1830916" constant="no"/>
-<attribute name="OC_NEWARK" value="37K9960" constant="no"/>
-<attribute name="POPULARITY" value="3" constant="no"/>
-</technology>
-</technologies>
-</device>
-<device name="S" package="S4B-ZR">
-<connects>
-<connect gate="-1" pin="1" pad="1"/>
-<connect gate="-2" pin="1" pad="2"/>
-<connect gate="-3" pin="1" pad="3"/>
-<connect gate="-4" pin="1" pad="4"/>
-</connects>
-<package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:7641/1"/>
-</package3dinstances>
-<technologies>
-<technology name="">
-<attribute name="MF" value="FARNELL" constant="no"/>
-<attribute name="MPN" value="S4B-ZR(LF)(SN)" constant="no"/>
-<attribute name="OC_FARNELL" value="9491830" constant="no"/>
-<attribute name="OC_NEWARK" value="38K8076" constant="no"/>
-<attribute name="POPULARITY" value="0" constant="no"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 </libraries>
 <attributes>
 </attributes>
@@ -12629,7 +12535,6 @@ Source: http://www.jst.com .. eZH.pdf</description>
 </modules>
 <parts>
 <part name="MAINPOWER" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="VOLTAGE" device="" value="12V"/>
-<part name="REGULATOR" library="dc-dc-converter" library_urn="urn:adsk.eagle:library:208" deviceset="R-78C*-1.0" device="" package3d_urn="urn:adsk.eagle:package:12318/1" technology="1.8"/>
 <part name="X_1" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="RELAY" library="SRD-05VDC-SL-C" deviceset="SRD-05VDC-SL-C" device=""/>
 <part name="SP1" library="buzzer" library_urn="urn:adsk.eagle:library:113" deviceset="KSS1201" device="" package3d_urn="urn:adsk.eagle:package:5268/1"/>
@@ -12670,7 +12575,12 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <part name="G1" library="battery" library_urn="urn:adsk.eagle:library:109" deviceset="SL-340/P3.6V" device="" package3d_urn="urn:adsk.eagle:package:4605/1"/>
 <part name="G2" library="battery" library_urn="urn:adsk.eagle:library:109" deviceset="SL-340/P3.6V" device="" package3d_urn="urn:adsk.eagle:package:4605/1"/>
 <part name="G3" library="battery" library_urn="urn:adsk.eagle:library:109" deviceset="SL-340/P3.6V" device="" package3d_urn="urn:adsk.eagle:package:4605/1"/>
-<part name="X1" library="con-jst" library_urn="urn:adsk.eagle:library:156" deviceset="?4B-ZR" device="B" package3d_urn="urn:adsk.eagle:package:7642/1"/>
+<part name="U$2" library="cool_safe_lib" deviceset="DC-DC-STEP-DOWN-MP1584" device=""/>
+<part name="X_8" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
+<part name="U$3" library="cool_safe_lib" deviceset="FPS" device=""/>
+<part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
+<part name="X_11" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
+<part name="BATTERY1" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" deviceset="M02" device="" package3d_urn="urn:adsk.eagle:package:5956/1" value="12V"/>
 </parts>
 <sheets>
 <sheet>
@@ -12679,18 +12589,14 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <text x="178.816" y="26.67" size="1.016" layer="91">COMM</text>
 <text x="178.562" y="29.21" size="1.016" layer="91">NO</text>
 <text x="178.562" y="21.59" size="1.016" layer="91">NC</text>
-<text x="25.4" y="53.34" size="1.778" layer="91">Fingerprint Scanner</text>
-<text x="25.4" y="68.58" size="1.778" layer="91">Battery</text>
+<text x="20.32" y="60.96" size="1.778" layer="91" rot="R270">Fingerprint Scanner</text>
 </plain>
 <instances>
 <instance part="MAINPOWER" gate="G$1" x="5.08" y="109.22" smashed="yes">
 <attribute name="NAME" x="-0.254" y="114.3" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="0" y="106.68" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="REGULATOR" gate="G$1" x="96.52" y="68.58" smashed="yes" rot="MR0">
-<attribute name="NAME" x="104.14" y="73.66" size="1.778" layer="95" rot="MR0"/>
-</instance>
-<instance part="X_1" gate="G$1" x="96.52" y="60.96" smashed="yes"/>
+<instance part="X_1" gate="G$1" x="71.12" y="71.12" smashed="yes" rot="MR0"/>
 <instance part="RELAY" gate="G$1" x="172.72" y="27.94" smashed="yes">
 <attribute name="NAME" x="169.1631" y="17.781040625" size="1.77831875" layer="95"/>
 </instance>
@@ -12765,13 +12671,13 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <attribute name="NAME" x="99.06" y="122.555" size="1.778" layer="95"/>
 <attribute name="VALUE" x="99.06" y="120.015" size="1.778" layer="96"/>
 </instance>
-<instance part="C1" gate="G$1" x="91.44" y="111.76" smashed="yes">
-<attribute name="NAME" x="92.964" y="112.141" size="1.778" layer="95"/>
-<attribute name="VALUE" x="92.964" y="107.061" size="1.778" layer="96"/>
+<instance part="C1" gate="G$1" x="91.44" y="104.14" smashed="yes">
+<attribute name="NAME" x="92.964" y="104.521" size="1.778" layer="95"/>
+<attribute name="VALUE" x="92.964" y="99.441" size="1.778" layer="96"/>
 </instance>
-<instance part="C2" gate="G$1" x="119.38" y="111.76" smashed="yes">
-<attribute name="NAME" x="120.904" y="112.141" size="1.778" layer="95"/>
-<attribute name="VALUE" x="120.904" y="107.061" size="1.778" layer="96"/>
+<instance part="C2" gate="G$1" x="119.38" y="104.14" smashed="yes">
+<attribute name="NAME" x="120.904" y="104.521" size="1.778" layer="95"/>
+<attribute name="VALUE" x="120.904" y="99.441" size="1.778" layer="96"/>
 </instance>
 <instance part="12V_INPUT" gate="G$1" x="45.72" y="116.84" smashed="yes" rot="MR180">
 <attribute name="VALUE" x="43.18" y="121.92" size="1.778" layer="96" rot="MR180"/>
@@ -12787,50 +12693,49 @@ Source: http://www.jst.com .. eZH.pdf</description>
 </instance>
 <instance part="X_2" gate="G$1" x="53.34" y="86.36" smashed="yes"/>
 <instance part="X_3" gate="G$1" x="5.08" y="99.06" smashed="yes"/>
-<instance part="P+1" gate="1" x="111.76" y="73.66" smashed="yes">
-<attribute name="VALUE" x="108.966" y="75.692" size="1.778" layer="96"/>
+<instance part="P+1" gate="1" x="142.24" y="86.36" smashed="yes">
+<attribute name="VALUE" x="144.526" y="85.852" size="1.778" layer="96"/>
 </instance>
-<instance part="+3V3" gate="G$1" x="81.28" y="73.66" smashed="yes">
-<attribute name="VALUE" x="83.82" y="76.2" size="1.778" layer="96" rot="R180"/>
+<instance part="+3V3" gate="G$1" x="68.58" y="55.88" smashed="yes">
+<attribute name="VALUE" x="71.12" y="58.42" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="R5" gate="G$1" x="124.46" y="35.56" smashed="yes">
 <attribute name="NAME" x="123.19" y="37.0586" size="1.778" layer="95"/>
 <attribute name="VALUE" x="120.65" y="32.258" size="1.778" layer="96"/>
 </instance>
-<instance part="G1" gate="G$1" x="5.08" y="76.2" smashed="yes" rot="R90">
-<attribute name="NAME" x="1.905" y="74.93" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="10.16" y="74.93" size="1.778" layer="96" rot="R90"/>
+<instance part="G1" gate="G$1" x="-10.16" y="76.2" smashed="yes" rot="R90">
+<attribute name="NAME" x="-13.335" y="74.93" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="-16.51" y="76.2" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="G2" gate="G$1" x="5.08" y="66.04" smashed="yes" rot="R90">
-<attribute name="NAME" x="1.905" y="64.77" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="10.16" y="64.77" size="1.778" layer="96" rot="R90"/>
+<instance part="G2" gate="G$1" x="-10.16" y="66.04" smashed="yes" rot="R90">
+<attribute name="NAME" x="-13.335" y="64.77" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="-16.51" y="66.04" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="G3" gate="G$1" x="5.08" y="55.88" smashed="yes" rot="R90">
-<attribute name="NAME" x="1.905" y="54.61" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="10.16" y="54.61" size="1.778" layer="96" rot="R90"/>
+<instance part="G3" gate="G$1" x="-10.16" y="55.88" smashed="yes" rot="R90">
+<attribute name="NAME" x="-13.335" y="54.61" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="-16.51" y="58.42" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="X1" gate="-1" x="33.02" y="43.18" smashed="yes" rot="R180">
-<attribute name="NAME" x="32.004" y="43.942" size="1.524" layer="95" rot="R180"/>
-<attribute name="VALUE" x="37.084" y="41.656" size="1.778" layer="96" rot="R180"/>
+<instance part="U$2" gate="G$1" x="96.52" y="68.58" smashed="yes" rot="MR0">
+<attribute name="NAME" x="109.22" y="83.82" size="1.778" layer="95" rot="MR0"/>
+<attribute name="VALUE" x="109.22" y="81.28" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X1" gate="-2" x="33.02" y="45.72" smashed="yes" rot="R180">
-<attribute name="NAME" x="32.004" y="46.482" size="1.524" layer="95" rot="R180"/>
+<instance part="X_8" gate="G$1" x="121.92" y="71.12" smashed="yes" rot="MR0"/>
+<instance part="U$3" gate="G$1" x="22.86" y="53.34" smashed="yes" rot="R180">
+<attribute name="NAME" x="40.64" y="38.1" size="1.778" layer="94" rot="R180"/>
 </instance>
-<instance part="X1" gate="-3" x="33.02" y="48.26" smashed="yes" rot="R180">
-<attribute name="NAME" x="32.004" y="49.022" size="1.524" layer="95" rot="R180"/>
+<instance part="+3V4" gate="G$1" x="55.88" y="68.58" smashed="yes">
+<attribute name="VALUE" x="58.42" y="71.12" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="X1" gate="-4" x="33.02" y="50.8" smashed="yes" rot="R180">
-<attribute name="NAME" x="32.004" y="51.562" size="1.524" layer="95" rot="R180"/>
+<instance part="X_11" gate="G$1" x="63.5" y="48.26" smashed="yes"/>
+<instance part="BATTERY1" gate="G$1" x="10.16" y="68.58" smashed="yes" rot="R180">
+<attribute name="VALUE" x="12.7" y="73.66" size="1.778" layer="96" rot="R180"/>
+<attribute name="NAME" x="12.7" y="62.738" size="1.778" layer="95" rot="R180"/>
 </instance>
 </instances>
 <busses>
 </busses>
 <nets>
 <net name="FPS" class="0">
-<segment>
-<pinref part="REGULATOR" gate="G$1" pin="GND"/>
-<pinref part="X_1" gate="G$1" pin="0"/>
-</segment>
 <segment>
 <pinref part="SP1" gate="1" pin="2"/>
 <pinref part="X_6" gate="G$1" pin="0"/>
@@ -12868,10 +12773,10 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <wire x1="91.44" y1="88.9" x2="106.68" y2="88.9" width="0.1524" layer="91"/>
 <wire x1="106.68" y1="88.9" x2="119.38" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="C1" gate="G$1" pin="2"/>
-<wire x1="91.44" y1="106.68" x2="91.44" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="99.06" x2="91.44" y2="88.9" width="0.1524" layer="91"/>
 <junction x="91.44" y="88.9"/>
 <pinref part="C2" gate="G$1" pin="2"/>
-<wire x1="119.38" y1="106.68" x2="119.38" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="99.06" x2="119.38" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="BATTERY" gate="G$1" pin="2"/>
 <wire x1="68.58" y1="96.52" x2="71.12" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="71.12" y1="96.52" x2="71.12" y2="88.9" width="0.1524" layer="91"/>
@@ -12892,6 +12797,34 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <pinref part="X_3" gate="G$1" pin="0"/>
 <wire x1="5.08" y1="101.6" x2="5.08" y2="99.06" width="0.1524" layer="91"/>
 <junction x="5.08" y="101.6"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="OUT-.1"/>
+<wire x1="78.74" y1="73.66" x2="76.2" y2="73.66" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="OUT-.2"/>
+<wire x1="78.74" y1="71.12" x2="76.2" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="71.12" x2="76.2" y2="73.66" width="0.1524" layer="91"/>
+<pinref part="X_1" gate="G$1" pin="0"/>
+<wire x1="76.2" y1="73.66" x2="71.12" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="73.66" x2="71.12" y2="71.12" width="0.1524" layer="91"/>
+<junction x="76.2" y="73.66"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="IN-.1"/>
+<pinref part="X_8" gate="G$1" pin="0"/>
+<wire x1="114.3" y1="73.66" x2="116.84" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="116.84" y1="73.66" x2="121.92" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="73.66" x2="121.92" y2="71.12" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="IN-.2"/>
+<wire x1="114.3" y1="71.12" x2="116.84" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="116.84" y1="71.12" x2="116.84" y2="73.66" width="0.1524" layer="91"/>
+<junction x="116.84" y="73.66"/>
+</segment>
+<segment>
+<pinref part="X_11" gate="G$1" pin="0"/>
+<wire x1="63.5" y1="48.26" x2="63.5" y2="53.34" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="GND"/>
+<wire x1="63.5" y1="53.34" x2="50.8" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$4" class="0">
@@ -12970,13 +12903,20 @@ Source: http://www.jst.com .. eZH.pdf</description>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="3V3"/>
-<pinref part="REGULATOR" gate="G$1" pin="VOUT"/>
-<wire x1="83.82" y1="68.58" x2="81.28" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="81.28" y1="68.58" x2="81.28" y2="43.18" width="0.1524" layer="91"/>
-<wire x1="81.28" y1="43.18" x2="86.36" y2="43.18" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="OUT+.1"/>
+<wire x1="78.74" y1="66.04" x2="73.66" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="66.04" x2="73.66" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="53.34" x2="73.66" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="43.18" x2="86.36" y2="43.18" width="0.1524" layer="91"/>
 <pinref part="+3V3" gate="G$1" pin="+3V3"/>
-<wire x1="81.28" y1="71.12" x2="81.28" y2="68.58" width="0.1524" layer="91"/>
-<junction x="81.28" y="68.58"/>
+<wire x1="68.58" y1="53.34" x2="73.66" y2="53.34" width="0.1524" layer="91"/>
+<junction x="73.66" y="53.34"/>
+</segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="VCC"/>
+<pinref part="+3V4" gate="G$1" pin="+3V3"/>
+<wire x1="50.8" y1="58.42" x2="55.88" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="58.42" x2="55.88" y2="66.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$17" class="0">
@@ -13063,19 +13003,20 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <pinref part="P+2" gate="1" pin="+12V"/>
 </segment>
 <segment>
-<pinref part="C2" gate="G$1" pin="1"/>
+<pinref part="U$2" gate="G$1" pin="IN+.1"/>
+<wire x1="137.16" y1="81.28" x2="137.16" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="66.04" x2="114.3" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="81.28" x2="142.24" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="142.24" y1="81.28" x2="142.24" y2="83.82" width="0.1524" layer="91"/>
+<pinref part="P+1" gate="1" pin="+12V"/>
 <pinref part="IC1" gate="A1" pin="VO"/>
 <wire x1="119.38" y1="116.84" x2="116.84" y2="116.84" width="0.1524" layer="91"/>
-<wire x1="119.38" y1="114.3" x2="119.38" y2="116.84" width="0.1524" layer="91"/>
-<wire x1="119.38" y1="116.84" x2="137.16" y2="116.84" width="0.1524" layer="91"/>
+<pinref part="C2" gate="G$1" pin="1"/>
+<wire x1="119.38" y1="106.68" x2="119.38" y2="116.84" width="0.1524" layer="91"/>
 <junction x="119.38" y="116.84"/>
-<wire x1="137.16" y1="116.84" x2="137.16" y2="68.58" width="0.1524" layer="91"/>
-<pinref part="REGULATOR" gate="G$1" pin="VIN"/>
-<wire x1="137.16" y1="68.58" x2="111.76" y2="68.58" width="0.1524" layer="91"/>
-<pinref part="P+1" gate="1" pin="+12V"/>
-<wire x1="111.76" y1="68.58" x2="109.22" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="111.76" y1="71.12" x2="111.76" y2="68.58" width="0.1524" layer="91"/>
-<junction x="111.76" y="68.58"/>
+<wire x1="119.38" y1="116.84" x2="137.16" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="81.28" x2="137.16" y2="116.84" width="0.1524" layer="91"/>
+<junction x="137.16" y="81.28"/>
 </segment>
 </net>
 <net name="N$11" class="0">
@@ -13104,7 +13045,7 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <wire x1="76.2" y1="111.76" x2="76.2" y2="116.84" width="0.1524" layer="91"/>
 <junction x="76.2" y="116.84"/>
 <pinref part="C1" gate="G$1" pin="1"/>
-<wire x1="91.44" y1="114.3" x2="91.44" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="106.68" x2="91.44" y2="116.84" width="0.1524" layer="91"/>
 <junction x="91.44" y="116.84"/>
 </segment>
 </net>
@@ -13151,6 +13092,40 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <segment>
 <pinref part="G2" gate="G$1" pin="-"/>
 <pinref part="G3" gate="G$1" pin="+"/>
+</segment>
+</net>
+<net name="N$16" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="RX"/>
+<wire x1="86.36" y1="35.56" x2="55.88" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="35.56" x2="55.88" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="TX"/>
+<wire x1="55.88" y1="48.26" x2="50.8" y2="48.26" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$28" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="TX"/>
+<wire x1="86.36" y1="33.02" x2="53.34" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="53.34" y1="33.02" x2="53.34" y2="43.18" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="RX"/>
+<wire x1="50.8" y1="43.18" x2="53.34" y2="43.18" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$30" class="0">
+<segment>
+<pinref part="G1" gate="G$1" pin="+"/>
+<pinref part="BATTERY1" gate="G$1" pin="1"/>
+<wire x1="-10.16" y1="81.28" x2="2.54" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="81.28" x2="2.54" y2="68.58" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$31" class="0">
+<segment>
+<pinref part="BATTERY1" gate="G$1" pin="2"/>
+<pinref part="G3" gate="G$1" pin="-"/>
+<wire x1="2.54" y1="66.04" x2="2.54" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="50.8" x2="-10.16" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
