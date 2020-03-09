@@ -13569,34 +13569,34 @@ Source: http://products.nichicon.co.jp/en/pdf/XJA043/e-ud.pdf</description>
 <smd name="26T" x="40.64" y="2.159" dx="2.032" dy="1.016" layer="1" rot="R90"/>
 <smd name="27T" x="43.18" y="2.159" dx="2.032" dy="1.016" layer="1" rot="R90"/>
 <smd name="28T" x="45.72" y="2.159" dx="2.032" dy="1.016" layer="1" rot="R90"/>
-<pad name="P$1" x="17.78" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$2" x="20.32" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$3" x="22.86" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$4" x="25.4" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$5" x="27.94" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$6" x="30.48" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$7" x="33.02" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$8" x="35.56" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$9" x="38.1" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$10" x="40.64" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$11" x="43.18" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$12" x="45.72" y="24.13" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$13" x="7.62" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$14" x="10.16" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$15" x="12.7" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$16" x="15.24" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$17" x="17.78" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$18" x="20.32" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$19" x="22.86" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$20" x="25.4" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$21" x="27.94" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$22" x="30.48" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$23" x="33.02" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$24" x="35.56" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$25" x="38.1" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$26" x="40.64" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$27" x="43.18" y="3.81" drill="0.6" shape="long" rot="R90"/>
-<pad name="P$28" x="45.72" y="3.81" drill="0.6" shape="long" rot="R90"/>
+<pad name="P$1" x="17.78" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$2" x="20.32" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$3" x="22.86" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$4" x="25.4" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$5" x="27.94" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$6" x="30.48" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$7" x="33.02" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$8" x="35.56" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$9" x="38.1" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$10" x="40.64" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$11" x="43.18" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$12" x="45.72" y="24.13" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$13" x="7.62" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$14" x="10.16" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$15" x="12.7" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$16" x="15.24" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$17" x="17.78" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$18" x="20.32" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$19" x="22.86" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$20" x="25.4" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$21" x="27.94" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$22" x="30.48" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$23" x="33.02" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$24" x="35.56" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$25" x="38.1" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$26" x="40.64" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$27" x="43.18" y="3.81" drill="1.016" shape="long" rot="R90"/>
+<pad name="P$28" x="45.72" y="3.81" drill="1.016" shape="long" rot="R90"/>
 </package>
 <package name="FEATHER">
 <pad name="P$1" x="3.5" y="3.5" drill="0.3" diameter="1"/>
