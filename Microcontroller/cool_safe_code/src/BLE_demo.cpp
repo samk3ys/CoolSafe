@@ -2,7 +2,7 @@
 //       THIS IS A GENERATED FILE - DO NOT EDIT       //
 /******************************************************/
 
-#line 1 "a:/Documents/Programming/Particle/cool_safe_code/src/BLE_demo.ino"
+#line 1 "c:/Users/SAM-Laptop/Documents/Programming/CoolSafe/Microcontroller/cool_safe_code/src/BLE_demo.ino"
 /*
  * Project: Cool Safe Code
  * Description: Main code that runs our senior capstone project for UK. It is a lock-bin locked by a solenoid that also has a fingerprint scanner and app to register fingerprints
@@ -21,7 +21,7 @@ void goodFeedback();
 void badFeedback();
 void setup();
 void loop();
-#line 12 "a:/Documents/Programming/Particle/cool_safe_code/src/BLE_demo.ino"
+#line 12 "c:/Users/SAM-Laptop/Documents/Programming/CoolSafe/Microcontroller/cool_safe_code/src/BLE_demo.ino"
 SYSTEM_MODE(MANUAL);          // avoid Particle registration. Can't use BLE out-of-the-box without MANUAL control
 
 // I/O

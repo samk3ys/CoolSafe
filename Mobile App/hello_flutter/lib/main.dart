@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
         )
       ),
       home: MyHomePage(title: 'Flutter & BLE Demo'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -52,29 +55,123 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _connected = false;
-  Color bleColor = Colors.grey;
-  String bleMessage = 'Looking for connection...';
-  String address = '6E400000-B5A3-F393-E0A9-E50E24DCCA9E';
+  final String SERVICE_UUID = "6e400000-b5a3-f393-e0a9-e50e24dcca9e";
+  final String TX_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+  final String RX_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+  final String TARGET_DEVICE_NAME = "Particle Xenon";
 
-  void _connectBLE() {
-    // Discover services
-    List<BluetoothService> services = await device.discoverServices();
-    services.forEach((service) {
-        // do something with service
-        if (service.uuid == address) {
-          // Connect to the device
-          await device.connect();
-          _connected = true;
-        }
+  FlutterBlue flutterBlue = FlutterBlue.instance;
+  StreamSubscription<ScanResult> scanSubScription;
+
+  BluetoothDevice targetDevice;
+  BluetoothCharacteristic txCharacteristic;
+  BluetoothCharacteristic rxCharacteristic;
+  String data;  // Holds what is received thru RXCharacteristic
+
+  String connectionText = 'Looking for connection...';
+  Color bleColor = Colors.grey;
+  bool _connected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    startScan();
+  }
+
+  startScan() {
+    setState(() {
+      connectionText = "Start Scanning";
     });
+
+    scanSubScription = flutterBlue.scan().listen((scanResult) {
+      if (scanResult.device.name == TARGET_DEVICE_NAME) {
+        print('DEVICE found');
+        stopScan();
+        setState(() {
+          connectionText = "Found Target Device";
+        });
+
+        targetDevice = scanResult.device;
+        connectToDevice();
+      }
+    }, onDone: () => stopScan());
+  }
+
+  stopScan() {
+    scanSubScription?.cancel();
+    scanSubScription = null;
+  }
+
+  connectToDevice() async {
+    if (targetDevice == null) return;
 
     setState(() {
-      if (_connected == true) {
-        bleColor = Colors.blue;
-        bleMessage = 'Connected!';
+      connectionText = "Device Connecting";
+    });
+
+    await targetDevice.connect();
+    print('DEVICE CONNECTED');
+    setState(() {
+      bleColor = Colors.blue;
+      connectionText = "Device Connected";
+      _connected = true;
+    });
+
+    discoverServices();
+  }
+
+  disconnectFromDevice() {
+    if (targetDevice == null) return;
+
+    targetDevice.disconnect();
+
+    setState(() {
+      bleColor = Colors.grey;
+      connectionText = "Device Disconnected";
+      _connected = false;
+    });
+  }
+
+  discoverServices() async {
+    if (targetDevice == null) return;
+
+    List<BluetoothService> services = await targetDevice.discoverServices();
+    services.forEach((service) {
+      // do something with service
+      if (service.uuid.toString() == SERVICE_UUID) {
+        service.characteristics.forEach((characteristic) {
+          if (characteristic.uuid.toString() == TX_UUID) {
+            txCharacteristic = characteristic;
+            writeData("Hello from Flutter Blue!");
+            /*setState(() {
+              connectionText = "Successfully transmitted to ${targetDevice.name}";
+            });*/
+          }
+          if (characteristic.uuid.toString() == RX_UUID) {
+            rxCharacteristic = characteristic;
+            readData(data);
+            print(data);
+            /*setState(() {
+              connectionText = "Successfully received from ${targetDevice.name}";
+            });*/
+          }
+        });
       }
     });
+  }
+
+  writeData(String data) {
+    if (txCharacteristic == null) return;
+
+    List<int> bytes = utf8.encode(data);
+    txCharacteristic.write(bytes);
+  }
+
+  readData(String data) async {
+    if (rxCharacteristic == null) return;
+    
+    List<int> bytes = await rxCharacteristic.read();
+    data = utf8.decode(bytes);
   }
 
   @override
@@ -96,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // in the middle of the parent.
         child: Column(
           children: <Widget>[            
-            Text('\n$bleMessage\n',
+            Text('\n$connectionText\n',
               style: Theme.of(context).textTheme.display1,
               textAlign: TextAlign.center,
             ),
@@ -115,12 +212,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: Theme.of(context).textTheme.display1,
               ), 
               onPressed: () {
-                // Go to demo page
-                _connectBLE();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DemoPage()),
-                );
+                connectToDevice();  // Try to connect
+                if (_connected) {   // Go to demo page if it connects
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DemoPage()),
+                  );
+                }
+                // Otherwise just stay put
               },
             ),
           ],

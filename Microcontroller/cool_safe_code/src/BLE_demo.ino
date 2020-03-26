@@ -60,9 +60,9 @@ int TetrisDuration[] = {2, 4, 4, 2, 4, 4, 4,
                         4, 4, 4, 4, 4};
 int startSound[] =    {NOTE_C3, NOTE_C4, NOTE_D4, NOTE_C5, NOTE_D5, NOTE_C6};
 int startDuration[] = {2, 4, 4, 4, 4, 1};
-int goodSound[] = {NOTE_C5, NOTE_E5, NOTE_G5};
+int goodSound[] = {NOTE_C3, NOTE_E3, NOTE_G3};
 int goodDuration[] = {4, 4, 1};
-int badSound[] = {NOTE_G4, NOTE_E4, NOTE_C4};
+int badSound[] = {NOTE_G3, NOTE_E3, NOTE_C3};
 int badDuration[] = {4, 4, 1};
 
 uint8_t dataToHex(uint8_t a, uint8_t b) {

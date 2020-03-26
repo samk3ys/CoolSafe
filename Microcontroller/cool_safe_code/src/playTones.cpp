@@ -16,6 +16,8 @@ void play(int speakerPin, int numNotes, int* noteFrequencies, int* noteDurations
 
     // blocking delay needed because tone() does not block
     delay(noteDuration);
+
+    noTone(speakerPin);
   }
 
   noTone(speakerPin);
