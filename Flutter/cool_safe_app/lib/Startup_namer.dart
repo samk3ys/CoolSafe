@@ -1,5 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+//import 'package:video_player/video_player.dart';
+
+createRegAlertDialog(BuildContext context){
+  return showDialog(context: context, builder: (context){
+    return AlertDialog(
+      title: Text("Registration Start"),
+      content: Image.asset("assets/images/RegistrationGuide.gif"),
+      actions: <Widget>[
+        MaterialButton(
+          child: Text("Got it!"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+  });
+}
+
+//Use signal format ID/OPERATION/AUTHORIZED/NAME
+void AddUser(BuildContext context){
+  //send signal ID/ADD/YES/NAME
+  createRegAlertDialog(context);
+//  if (good scan)
+  createNameAlertDialog(context).then((onValue){
+//  Do something with onValue (for example:
+//    return showDialog(context: context, builder: (context){
+//      return AlertDialog(
+//        title: Text(onValue),
+//        actions: <Widget>[
+//          MaterialButton(
+//            child: Text("Test!"),
+//            onPressed: () {
+//              Navigator.pop(context);
+//            },
+//          )
+//        ],
+//      );
+//    });
+  });
+} //AddUser()
+
+void EditUser(){
+  null;
+  //EditUser()
+}
+
+void AbleUser(){
+  null;
+  //AbleUser()
+}
+
+void DeleteUser(){
+  null;
+  //DeleteUser()
+}
+
+Future<String> createNameAlertDialog(BuildContext context){
+  TextEditingController nameCon = TextEditingController();
+  return showDialog(context: context, builder: (context){
+    return AlertDialog(
+      title: Text("Registration Over"),
+      content: TextField(
+        controller: nameCon,
+      ),
+      actions: <Widget>[
+        MaterialButton(
+          child: Text("Hello World 2"),
+          onPressed: () {
+            Navigator.of(context).pop(nameCon.text.toString());
+          },
+        )
+      ],
+    );
+  });
+}
 
 class HomeBar extends StatelessWidget {
   HomeBar({this.title});
@@ -16,11 +92,6 @@ class HomeBar extends StatelessWidget {
       child: Row(
         // <Widget> is the type of items in the list.
         children: <Widget>[
-          /*IconButton(
-            icon: Icon(Icons.arrow_back),
-            tooltip: 'Return',
-            onPressed: null,
-          ),*/
           // Expanded expands its child to fill the available space.
           Expanded(
             child: title,
@@ -90,7 +161,9 @@ class HomePage extends StatelessWidget {
           ),
           MaterialButton(
             child: Text('Add New Fingerprint'),
-            onPressed: () => AddUser(),
+            onPressed: () {
+              AddUser(context);
+            },
           ),
           MaterialButton(
             child: Text('View Permissions'),
@@ -178,7 +251,9 @@ class UsersPermissions extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => AddUser(),
+        onPressed: () {
+          AddUser(context);
+        },
       ),
     );
   }
@@ -203,18 +278,24 @@ class IndivUser extends StatelessWidget {
           ),
           MaterialButton(
             child: Text('Edit'),
-            onPressed: () => EditUser(),
+            onPressed: () {
+              EditUser();
+            },
             //send edit signal through BLE
             //edit name in array
           ),
           MaterialButton(
             child: Text('Disable/Enable'),
-            onPressed: () => AbleUser(),
+            onPressed: () {
+              AbleUser();
+            },
             //send disable/enable signal through BLE
           ),
           MaterialButton(
             child: Text('Delete'),
-            onPressed: () => DeleteUser(),
+            onPressed: () {
+              DeleteUser();
+            },
             //send delete signal through BLE
             //remove name in array
           ),
@@ -223,28 +304,6 @@ class IndivUser extends StatelessWidget {
     );
   }
 } //Page for an individual user: button to edit, disable/enable permissions, and delete
-
-//Use signal format ID/OPERATION/AUTHORIZED/NAME
-
-void AddUser(){
-  null;
-  //AddUser()
-}
-
-void EditUser(){
-  null;
-  //EditUser()
-}
-
-void AbleUser(){
-  null;
-  //AbleUser()
-}
-
-void DeleteUser(){
-  null;
-  //DeleteUser()
-}
 
 void main() {
   runApp(MaterialApp(
