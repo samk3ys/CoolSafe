@@ -1,4 +1,4 @@
-a:/Documents/Programming/Particle/cool_safe_code/target/1.4.4/xenon//obj/./src/module_info.o: \
+a:/Documents/Programming/GitHub/CoolSafe/Microcontroller/cool_safe_code/target/1.4.4/xenon//obj/./src/module_info.o: \
  src/module_info.c ../../../dynalib/inc/module_info.inc \
  ../../../dynalib/inc/module_info.h ../../../services/inc/static_assert.h \
  c:\users\sam\.particle\toolchains\gcc-arm\5.3.1\lib\gcc\arm-none-eabi\5.3.1\include\stddef.h \

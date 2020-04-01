@@ -250,6 +250,7 @@ FPS_GT511C3::~FPS_GT511C3()
 {
 	//_serial.~SoftwareSerial();
 	Serial1.~USARTSerial();
+	Serial1.end();
 }
 #ifndef __GNUC__
 #pragma endregion
@@ -523,7 +524,7 @@ int FPS_GT511C3::Enroll3()
 // Return: true if finger pressed, false if not
 bool FPS_GT511C3::IsPressFinger()
 {
-	if (UseSerialDebug) Serial.println("FPS - IsPressFinger");
+	//if (UseSerialDebug) Serial.println("FPS - IsPressFinger");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::IsPressFinger;
 	byte* packetbytes = cp->GetPacketBytes();

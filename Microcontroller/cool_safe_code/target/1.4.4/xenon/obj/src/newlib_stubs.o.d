@@ -1,4 +1,4 @@
-a:/Documents/Programming/Particle/cool_safe_code/target/1.4.4/xenon//obj/./src/newlib_stubs.o: \
+a:/Documents/Programming/GitHub/CoolSafe/Microcontroller/cool_safe_code/target/1.4.4/xenon//obj/./src/newlib_stubs.o: \
  src/newlib_stubs.cpp \
  ../../../modules/shared/nRF52840/inc/user-part/newlib_stubs.inc \
  c:\users\sam\.particle\toolchains\gcc-arm\5.3.1\arm-none-eabi\include\sys\types.h \
