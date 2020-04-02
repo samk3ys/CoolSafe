@@ -10,46 +10,45 @@
  * Date: Spring 2020
  */
 
-#include "Particle.h"               // library for Particle devices (we are using a Particle Xenon)
-#include "FPS_GT511C3_Particle.h"   // library for fingerprint scanner functions
-#include "playTones.h"              // file for playing sounds on a buzzer / speaker
+#include "Particle.h"                         // library for Particle devices (we are using a Particle Xenon)
+#include "FPS_GT511C3_Particle.h"             // library for fingerprint scanner functions
+#include "playTones.h"                        // library for playing sounds on a buzzer / speaker
 
+// Globals and timings
 void onDataReceived(const uint8_t* data, size_t len, const BlePeerDevice& peer, void* context);
 void openBin();
 void goodFeedback();
 void badFeedback();
+int identifyUser();
+void enrollUser();
 void setup();
 void loop();
-#line 12 "a:/Documents/Programming/GitHub/CoolSafe/Microcontroller/cool_safe_code/src/cool_safe.ino"
-SYSTEM_MODE(MANUAL);          // avoid Particle registration. Can't use BLE out-of-the-box without MANUAL control
-
-// I/O
-const uint8_t smdLED = 7;     // digital pin connected to a blue on-board LED on the Particle Xenon
-const int buzzer = A0;        // digital pin for sound output
-const int Relay= A4;          // digital pin for relay signal. HIGH connects to normally open, LOW connects to normally closed
-const int keySwitch = D5;     // digital pin for the electro-mechanical switch with a key. Backup to fps.
-const int greenLED = D6;      // green LED signifies an authorized
-const int orLED = D7;         // amber LED signifies registration mode
-const int redLED = D8;        // red LED signifies an unauthorized user
-
-// Timings
+#line 13 "a:/Documents/Programming/GitHub/CoolSafe/Microcontroller/cool_safe_code/src/cool_safe.ino"
+SYSTEM_MODE(MANUAL);                          // Avoid Particle registration. Can't use BLE out-of-the-box without MANUAL control. Could changed to AUTOMATIC for easier cloud integration in the future.
+bool connectionFlag = false;                  // flag for remembering if BLE is connected to a device
+//#define BLE_DEFAULT_ADVERTISING_INTERVAL 500; // change advertising interval
+bool keySwitchFlag = false;                   // tracks state of the manual key switch to limit use to once per turn
+const int maxUsers = 200;                     // Maximum number of users able to be enrolled on the FPS
 const int unlockTime = 1000;                  // milliseconds to keep solenoid powered (pulled in) when opening the lock-bin
+const int delayTime = 100;                    // milliseconds to delay after a round of the main infinite loop
 const unsigned long UPDATE_INTERVAL = 1000;   // milliseconds between updating BLE data
 unsigned long lastUpdate = 0;                 // used for tracking BLE update interval
 
+// I/O
+const int buzzer    = A0;                     // digital pin for sound output
+const int relay     = A4;                     // digital pin for relay signal. HIGH connects to normally open, LOW connects to normally closed
+const int keySwitch = D5;                     // digital pin for the electro-mechanical switch with a key. Backup to fps.
+const int greenLED  = D6;                     // green LED signifies an authorized
+const int busyLED   = D7;                     // amber LED signifies the system is busy (usually with registration mode). Same as the Xenon's on-board blue LED
+const int redLED    = D8;                     // red LED signifies an unauthorized user
+FPS_GT511C3 fps;                              // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
+
 // BLE Service UUID
 const BleUuid serviceUuid("6E400000-B5A3-F393-E0A9-E50E24DCCA9E");
-//#define BLE_DEFAULT_ADVERTISING_INTERVAL 500; // change advertising interval
-// BLE Characteristics UUIDs
-//BleCharacteristic characteristicFirstName("First Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A8A"), serviceUuid);
-//BleCharacteristic characteristicLastName("Last Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A90"), serviceUuid);
-//BleCharacteristic characteristicNameOut("Name", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A3D"), serviceUuid);
-//BleCharacteristic characteristicID("User Index", BleCharacteristicProperty::NOTIFY, BleUuid("0x2A9A"), serviceUuid);  // 0xFF for "Unknown User"
+// BLE Characteristics UUIDs - UART Protocol regarding mobile device as host (i.e. Rx for app receives data and Tx for app transmits data)
 const char* writeUUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
 BleCharacteristic RxBLE("receive", BleCharacteristicProperty::WRITE_WO_RSP, writeUUID, serviceUuid, onDataReceived, (void*)writeUUID);
 BleCharacteristic TxBLE("transmit", BleCharacteristicProperty::NOTIFY, BleUuid("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"), serviceUuid);
-
-bool connectionFlag = false;
 
 // Operations
 uint8_t noOP = 0x00;          // no operation. blank.
@@ -58,31 +57,37 @@ uint8_t deleteUser = 0x02;    // remove user and biometric
 uint8_t disableUser = 0x03;   // remove user from group of authorized users
 uint8_t editUser = 0x04;      // change user name or other property
 
-FPS_GT511C3 fps;              // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
-
 // Buzzer songs
-int MarioNotes[] =    {NOTE_E5, NOTE_E5, 0, NOTE_E5, 0, NOTE_C5, NOTE_E5, 0, NOTE_G5, 0, 0, NOTE_G4};	// notes in the melody
-int MarioDuration[] = {4,		    4, 	     4, 4,	     4, 4,	     4,		    4, 4,		    2, 4, 4		   };	// note durations: 4 = quarter note, 2 = half note, etc.
-int DoomNotes[] =    {NOTE_DS3, NOTE_DS3, 0, NOTE_DS3, NOTE_DS3, 0, NOTE_DS3, NOTE_DS3, NOTE_B3, NOTE_DS3, NOTE_DS3, NOTE_A3, 0, NOTE_DS3, NOTE_AS3, NOTE_B3, NOTE_DS3, NOTE_DS3, 0, NOTE_DS3, NOTE_DS3, NOTE_B3, NOTE_DS3, NOTE_DS3};
-int DoomDuration[] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4};
-int Tetris[] =         {NOTE_E6, NOTE_B6, NOTE_C6, NOTE_D6, NOTE_C6, NOTE_B6, NOTE_A6,
-                        NOTE_A6, NOTE_C6, NOTE_E6, NOTE_D6, NOTE_C6, NOTE_B6, NOTE_C6,
-                        NOTE_D6, NOTE_E6, NOTE_C6, NOTE_A6, NOTE_A6};
-int TetrisDuration[] = {2, 4, 4, 2, 4, 4, 4,
-                        4, 4, 2, 4, 4, 2, 4,
-                        4, 4, 4, 4, 4};
-int startSound[] =    {NOTE_C3, NOTE_C4, NOTE_D4, NOTE_C5, NOTE_D5, NOTE_C6};
+int startSound[]    = {NOTE_C3, NOTE_C4, NOTE_D4, NOTE_C5, NOTE_D5, NOTE_C6};   // plays when the system boots up
 int startDuration[] = {2, 4, 4, 4, 4, 1};
-int goodSound[] = {NOTE_C3, NOTE_E3, NOTE_G3};
-int goodDuration[] = {4, 4, 1};
-int badSound[] = {NOTE_G3, NOTE_E3, NOTE_C3};
-int badDuration[] = {4, 4, 1};
+int goodSound[]     = {NOTE_C3, NOTE_E3, NOTE_G3};                              // plays when the lock-bin is unlocked
+int goodDuration[]  = {4, 4, 1};
+int badSound[]      = {NOTE_G3, NOTE_E3, NOTE_C3};                              // plays when access to the lock-bin is denied
+int badDuration[]   = {4, 4, 1};
 
+
+// Function called when the app sends data through TxBLE to this device
 void onDataReceived(const uint8_t* data, size_t len, const BlePeerDevice& peer, void* context) {
   // when data for when data is recieved through the RxBLE characteristic
   const char * dataChars = (char *) data;
   Serial.write(dataChars);
   Serial.write('\n');
+
+  char operationID = data[0];
+
+  switch (operationID) {
+    case 'a':
+      RGB.color(100, 0, 0);
+      break;
+    case 'b':
+      RGB.color(0, 100, 0);
+      break;
+    case 'c':
+      RGB.color(0, 0, 100);
+      break;
+    default:
+      RGB.color(255, 255, 0);
+  }
   
   // Hex code in to change LED color
   //uint8_t red = dataToHex(data[0], data[1]);
@@ -93,61 +98,49 @@ void onDataReceived(const uint8_t* data, size_t len, const BlePeerDevice& peer, 
 
 void openBin() {
   // Open the lock-bin by connecting the relays common and normally open, actuating the solenoid.
-  digitalWrite(Relay, HIGH);
-  goodFeedback();
+  digitalWrite(relay, HIGH);        // Unlock the bin
+  goodFeedback();                   // Use lights and sounds to let the user know the lock-bin is unlocked
   delay(unlockTime);                // How long the solenoid stays pulled in
-  digitalWrite(Relay, LOW);
+  digitalWrite(relay, LOW);         // Solenoid is back out, ready to lock again
 }
 
 void goodFeedback() {
   // green light and good sound
-  digitalWrite(greenLED, HIGH);
-  RGB.color(0, 255, 0);
-  play(buzzer, arraySize(goodSound), goodSound, goodDuration);
-  digitalWrite(greenLED, LOW);
+  digitalWrite(greenLED, HIGH);                                 // external green light
+  RGB.color(0, 255, 0);                                         // on-board green light
+  play(buzzer, arraySize(goodSound), goodSound, goodDuration);  // sound has some delay
+  digitalWrite(greenLED, LOW);                                  // turn lights back off
   RGB.color(0, 0, 0);
 }
 
 void badFeedback() {
   // red light and bad sound
-  digitalWrite(redLED, HIGH);
-  RGB.color(255, 0, 0);
-  play(buzzer, arraySize(badSound), badSound, badDuration);
-  digitalWrite(redLED, LOW);
+  digitalWrite(redLED, HIGH);                                   // external red light
+  RGB.color(255, 0, 0);                                         // on-board red light
+  play(buzzer, arraySize(badSound), badSound, badDuration);     // sound has some delay
+  digitalWrite(redLED, LOW);                                    // turn lights back off
   RGB.color(0, 0, 0);
 }
-/*
-void identify() {
-  // Identify fingerprint test
-  if (fps.IsPressFinger()) {
-    fps.SetLED(true); //added
-    fps.CaptureFinger(false);
-    int id = fps.Identify1_N();
-    
-    int maxIDs = 200; //<- change id value depending model you are using
-    if (id < maxIDs) {
-      //if the fingerprint matches, provide the matching template ID
-      Serial.print("Verified ID:");
-      Serial.println(id);
-      openBin();
-      goodFeedback();
-    }
-    else {
-      //if unable to recognize
-      Serial.println("Finger not found");
-      badFeedback();
-    }
+
+int identifyUser() {
+  // Once a finger is detected then identify a user with the FPS
+  fps.CaptureFinger(false);   // take a low quality image (faster)
+  int id = fps.Identify1_N(); // check if the fingerprint is stored in the FPS
+
+  if (id >= 0 && id < 200) {  // valid value for a user id on the GT-521F32 FPS
+    Serial.print("Verified ID:");
+    Serial.println(id);
+    openBin();  // Allow access. Includes good feedback
   }
-  else
-  {
-    Serial.println("Please press finger");
+  else {//if unable to recognize
+    Serial.println("Finger not found");
+    badFeedback();  // Deny access
   }
-  delay(100);
+
+  return id;  // Return id of the user from the FPS
 }
 
-void enroll() {
-  // Enroll test
-
+void enrollUser() {
   // find open enroll id
   int enrollid = 0;
   bool usedid = true;
@@ -199,9 +192,20 @@ void enroll() {
   }
   else Serial.println("Failed to capture first finger");
 }
-*/
+
 void setup() {
-  // BLE ///////////////////////////////////
+  // Debugging
+  //Serial.begin(9600);         // Open USB serial port for debugging
+  //fps.UseSerialDebug = true;  // Sends messages from FPS to USB Serial for debugging
+  // On-board LED control
+  RGB.control(true);            // take control of the On-Board RGB LED
+  RGB.color(255, 255, 255);     // Format red, green, blue, from 0 to 255
+  RGB.brightness(64);           // scales brightness of all three colors, 0-255
+  // Check EEPROM
+  //Serial.print("EEPROM Available: ");
+  //Serial.println(EEPROM.length());    // 4096 available
+  
+  // BLE
   // Attach characteristics
   BLE.addCharacteristic(TxBLE);
   BLE.addCharacteristic(RxBLE);
@@ -210,48 +214,45 @@ void setup() {
   BleAdvertisingData adverData;
   adverData.appendServiceUUID(serviceUuid);
   BLE.advertise(&adverData);
-  //////////////////////////////////////////
 
-  // Device I/O ////////////////////////////
-  //Serial1.begin(9600);          // FPS UART uses Rx (pin 14) & Tx (pin 15) on Particle Xenon
-  //fps.UseSerialDebug = true;    // Sends messages to USB Serial for debugging
-	fps.Open();                   // send serial command to initialize fps. Make sure FPS is connected or the program won't go past this part
-  fps.SetLED(true);             // visual test to make sure the fps is connected. Leave on for being able to detect fingerprints
+  // Device I/O
+	fps.Open();                   // Send serial command to initialize fps. FPS UART uses Rx (pin 14) & Tx (pin 15) on Particle Xenon. Make sure FPS is connected or the program won't go past this part
+  fps.SetLED(true);             // Visual test to make sure the fps is connected. Leave on for being able to detect fingerprints
   //delay(500);
   //fps.SetLED(false);
-
-  pinMode(keySwitch, INPUT);    // electro-mechanical switch w/ a key
-  pinMode(Relay, OUTPUT);       // signal to relay for switching solenoid
   pinMode(buzzer, OUTPUT);      // sound buzzer, not necessary for using tone()
-  pinMode(orLED, OUTPUT);       // amber registration mode LED
-  pinMode(redLED, OUTPUT);      // red access denied LED
+  pinMode(relay, OUTPUT);       // signal to relay for switching solenoid
+  pinMode(keySwitch, INPUT);    // electro-mechanical switch w/ a key
   pinMode(greenLED, OUTPUT);    // green access permitted LED
-  //////////////////////////////////////////
+  pinMode(busyLED, OUTPUT);       // amber registration mode LED
+  pinMode(redLED, OUTPUT);      // red access denied LED
 
-  // Debugging /////////////////////////////
-  // Setup USB Serial port
-  Serial.begin(); // defaults to 9600 baud rate
-  // On-board LED control
-  //pinMode(smdLED, OUTPUT);      // blue on-board LED attached to pin 7
-  //digitalWrite(smdLED, HIGH);
-  RGB.control(true);            // take control of the On-Board RGB LED
-  RGB.color(255, 255, 255);     // Format red, green, blue, from 0 to 255
-  RGB.brightness(64);           // scales brightness of all three colors, 0-255
-  // Check EEPROM
-  //Serial.print("EEPROM Available: ");
-  //Serial.println(EEPROM.length());    // 4096 available
-  //goodFeedback();
-  //badFeedback();
-  //play(buzzer, arraySize(Tetris), Tetris, TetrisDuration);  // Play Tetris-ish sound
-  play(buzzer, arraySize(startDuration), startSound, startDuration); // setup feedback
+  // Setup done. Play start-up sound, signifying that the system is ready to be used
+  play(buzzer, arraySize(startDuration), startSound, startDuration);
   delay(1000);
-  //////////////////////////////////////////
 }
 
- uint8_t a = (uint8_t) 1;  // variable for testing BLE incrementing data
+uint8_t a = (uint8_t) 1;  // variable for testing BLE incrementing data
 void loop() {
   RGB.color(0, 0, 255);
  
+  // Check for users trying to access using a fingerprint
+  if(fps.IsPressFinger()) {
+    RGB.color(255, 255, 255);   // white LED for debugging to show that a finger is recognized and the FPS is working on figuring out the user
+    identifyUser();
+    // TODO: Check if user is allowed access (or is disabled)
+  }
+  
+  // Check for users trying to access using the electro-mechanical tumbler lock switch
+  if (digitalRead(keySwitch) == HIGH && keySwitchFlag == false) {     // Key switch turned on
+    openBin();                      // Allow access. Includes good feedback
+    keySwitchFlag = true;           // Set flag so we don't unlock again before turning the key off
+  } 
+  else if (digitalRead(keySwitch) == LOW && keySwitchFlag == true) {  // Key switch turned off
+    keySwitchFlag = false;          // Reset flag so the key can be used again
+  }
+  
+  // Check for Bluetooth connections periodically
   if (millis() - lastUpdate >= UPDATE_INTERVAL) {
 	  lastUpdate = millis();
 
@@ -271,63 +272,7 @@ void loop() {
         connectionFlag = false;
       }
     }
-    
-    // Check for users trying to access using a fingerprint
-    if(fps.IsPressFinger()) {
-      RGB.color(255, 255, 255);   // white LED
-      
-      fps.CaptureFinger(false);   // take a low quality image (faster)
-      int id = fps.Identify1_N(); // check if the fingerprint is stored in the FPS
+  }
 
-      if (id >= 0 && id < 200) {  // valid value for a user id on the GT-521F32 FPS
-        Serial.print("Verified ID:");
-        Serial.println(id);
-        // TODO: Check if user is allowed access (or is disabled)
-        openBin();  // includes good feedback
-      }
-      else {//if unable to recognize
-        Serial.println("Finger not found");
-        badFeedback();
-      }
-    }
-    
-    // Check for users trying to access using the electro-mechanical tumbler lock switch
-    if (digitalRead(keySwitch) == HIGH) {
-      openBin();  // includes goodFeedback();
-      delay(2000);
-    }
-
-  } // end update
-  //RGB.color(0, 0, 255);
-  //delay(1000);
+  delay(delayTime);
 }
-
-/*
-void loop()
-{
-	RGB.color(0, 0, 255);
-  // Identify fingerprint test
-	if (fps.IsPressFinger())
-	{
-		fps.CaptureFinger(false);
-		int id = fps.Identify1_N();
-
-		if (id <200) //<- change id value depending model you are using
-		{//if the fingerprint matches, provide the matching template ID
-			RGB.color(0, 255, 0);
-      Serial.print("Verified ID:");
-			Serial.println(id);
-		}
-		else
-		{//if unable to recognize
-			Serial.println("Finger not found");
-      RGB.color(255, 0, 0);
-		}
-	}
-	else
-	{
-		Serial.println("Please press finger");
-	}
-	delay(500);
-}
-*/
