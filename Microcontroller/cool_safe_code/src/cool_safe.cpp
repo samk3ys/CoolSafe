@@ -21,6 +21,7 @@ void goodFeedback();
 void badFeedback();
 int identifyUser();
 void enrollUser();
+void LEDsequence();
 void setup();
 void loop();
 #line 13 "a:/Documents/Programming/GitHub/CoolSafe/Microcontroller/cool_safe_code/src/cool_safe.ino"
@@ -193,6 +194,21 @@ void enrollUser() {
   else Serial.println("Failed to capture first finger");
 }
 
+void LEDsequence() {
+  // Do a wave of all 3 LEDs on and then off. Used for making sure they work
+  digitalWrite(greenLED, HIGH);
+  delay(100);
+  digitalWrite(busyLED, HIGH);
+  delay(100);
+  digitalWrite(redLED, HIGH);
+  delay(500);
+  digitalWrite(greenLED, LOW);
+  delay(100);
+  digitalWrite(busyLED, LOW);
+  delay(100);
+  digitalWrite(redLED, LOW);
+}
+
 void setup() {
   // Debugging
   //Serial.begin(9600);         // Open USB serial port for debugging
@@ -224,12 +240,13 @@ void setup() {
   pinMode(relay, OUTPUT);       // signal to relay for switching solenoid
   pinMode(keySwitch, INPUT);    // electro-mechanical switch w/ a key
   pinMode(greenLED, OUTPUT);    // green access permitted LED
-  pinMode(busyLED, OUTPUT);       // amber registration mode LED
+  pinMode(busyLED, OUTPUT);     // amber registration mode LED
   pinMode(redLED, OUTPUT);      // red access denied LED
+  LEDsequence();                // turn all LEDs on at start to make sure they work
 
   // Setup done. Play start-up sound, signifying that the system is ready to be used
   play(buzzer, arraySize(startDuration), startSound, startDuration);
-  delay(1000);
+  //delay(1000);
 }
 
 uint8_t a = (uint8_t) 1;  // variable for testing BLE incrementing data
