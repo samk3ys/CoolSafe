@@ -151,47 +151,61 @@ void enrollUser() {
   }
   fps.EnrollStart(enrollid);
 
-  // enroll
+  // enroll w/ 3 seperate scans
   Serial.print("Press finger to Enroll #");
   Serial.println(enrollid);
   while(fps.IsPressFinger() == false) delay(100);
-  bool bret = fps.CaptureFinger(true);
+  bool bret = fps.CaptureFinger(true);  // true = use high quality scan
   int iret = 0;
-  if (bret != false)
-  {
+  if (bret != false) {
+    // Successful first scan
+    goodFeedback();
     Serial.println("Remove finger");
     fps.Enroll1(); 
     while(fps.IsPressFinger() == true) delay(100);
     Serial.println("Press same finger again");
     while(fps.IsPressFinger() == false) delay(100);
     bret = fps.CaptureFinger(true);
-    if (bret != false)
-    {
+    if (bret != false) {
+      // Successful second scan
+      goodFeedback();
       Serial.println("Remove finger");
       fps.Enroll2();
       while(fps.IsPressFinger() == true) delay(100);
       Serial.println("Press same finger yet again");
       while(fps.IsPressFinger() == false) delay(100);
       bret = fps.CaptureFinger(true);
-      if (bret != false)
-      {
+      if (bret != false) {
+        // Successful third scan
+        goodFeedback();
         Serial.println("Remove finger");
         iret = fps.Enroll3();
-        if (iret == 0)
-        {
+        if (iret == 0) {
+          // All scans successful
+          goodFeedback();
           Serial.println("Enrolling Successful");
         }
-        else
-        {
+        else {
+          // Something went wrong
+          badFeedback();
           Serial.print("Enrolling Failed with error code:");
           Serial.println(iret);
         }
       }
-      else Serial.println("Failed to capture third finger");
+      else {
+        badFeedback();
+        Serial.println("Failed to capture third finger");
+      }
     }
-    else Serial.println("Failed to capture second finger");
+    else {
+      badFeedback();
+      Serial.println("Failed to capture second finger");
+    }
   }
-  else Serial.println("Failed to capture first finger");
+  else {
+    badFeedback();
+    Serial.println("Failed to capture first finger");
+  }
 }
 
 void LEDsequence() {
@@ -246,7 +260,11 @@ void setup() {
 
   // Setup done. Play start-up sound, signifying that the system is ready to be used
   play(buzzer, arraySize(startDuration), startSound, startDuration);
-  //delay(1000);
+
+  // Enroll test
+  //digitalWrite(busyLED, HIGH);
+  //enrollUser();
+  //digitalWrite(busyLED, LOW);
 }
 
 uint8_t a = (uint8_t) 1;  // variable for testing BLE incrementing data
@@ -262,8 +280,16 @@ void loop() {
   
   // Check for users trying to access using the electro-mechanical tumbler lock switch
   if (digitalRead(keySwitch) == HIGH && keySwitchFlag == false) {     // Key switch turned on
-    openBin();                      // Allow access. Includes good feedback
-    keySwitchFlag = true;           // Set flag so we don't unlock again before turning the key off
+    delay(500);
+    if (digitalRead(keySwitch) == LOW) {  // Enter registration mode manually by flicking the switch on and off quickly
+      digitalWrite(busyLED, HIGH);
+      enrollUser();
+      digitalWrite(busyLED, LOW);
+    }
+    else {  // normal use of switch to open lock-bin
+      openBin();                      // Allow access. Includes good feedback
+      keySwitchFlag = true;           // Set flag so we don't unlock again before turning the key off
+    }
   } 
   else if (digitalRead(keySwitch) == LOW && keySwitchFlag == true) {  // Key switch turned off
     keySwitchFlag = false;          // Reset flag so the key can be used again
