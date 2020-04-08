@@ -11,7 +11,7 @@
  */
 
 #include "Particle.h"                         // library for Particle devices (we are using a Particle Xenon)
-#include "FPS_GT511C3_Particle.h"             // library for fingerprint scanner functions
+#include "FPS_GT521F32_Particle.h"            // library for fingerprint scanner functions
 #include "playTones.h"                        // library for playing sounds on a buzzer / speaker
 
 // Globals and timings

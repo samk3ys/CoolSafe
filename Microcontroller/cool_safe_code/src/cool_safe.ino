@@ -6,7 +6,7 @@
  */
 
 #include "Particle.h"                         // library for Particle devices (we are using a Particle Xenon)
-#include "FPS_GT511C3_Particle.h"             // library for fingerprint scanner functions
+#include "FPS_GT521F32_Particle.h"            // library for fingerprint scanner functions
 #include "playTones.h"                        // library for playing sounds on a buzzer / speaker
 
 // Globals and timings
@@ -30,7 +30,7 @@ const int keySwitch = D5;                     // digital pin for the electro-mec
 const int greenLED  = D6;                     // green LED signifies an authorized
 const int busyLED   = D7;                     // amber LED signifies the system is busy (usually with registration mode). Same as the Xenon's on-board blue LED
 const int redLED    = D8;                     // red LED signifies an unauthorized user
-FPS_GT511C3 fps;                              // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
+FPS_GT521F32 fps;                             // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
 
 // BLE Service UUID
 const BleUuid serviceUuid("6E400000-B5A3-F393-E0A9-E50E24DCCA9E");

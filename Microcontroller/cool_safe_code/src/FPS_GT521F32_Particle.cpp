@@ -1,12 +1,15 @@
 /*
-	FPS_GT511C3.h v1.0 - Library for controlling the GT-511C3 Finger Print Scanner (FPS)
-	Created by Josh Hawley, July 23rd 2013
+	FPS_GT521F32_Particle.h v1.0 - Library for controlling the GT-521F32 Finger Print Scanner (FPS)
+	
+	Originally made for GT-511C3 FPS by Josh Hawley, July 23rd 2013
 	Licensed for non-commercial use, must include this license message
 	basically, Feel free to hack away at it, but just give me credit for my work =)
 	TLDR; Wil Wheaton's Law
+
+	Edited to work without SoftwareSerial.h for the GT-521F32 by Sam Keys, 2020
 */
 
-#include "FPS_GT511C3_Particle.h"
+#include "FPS_GT521F32_Particle.h"
 
 #ifndef __GNUC__
 #pragma region -= Command_Packet Definitions =-
@@ -225,15 +228,15 @@ bool Response_Packet::CheckParsing(byte b, byte propervalue, byte alternatevalue
 #endif  //__GNUC__
 
 #ifndef __GNUC__
-#pragma region -= FPS_GT511C3 Definitions =-
+#pragma region -= FPS_GT521F32 Definitions =-
 #endif  //__GNUC__
 
 #ifndef __GNUC__
 #pragma region -= Constructor/Destructor =-
 #endif  //__GNUC__
 // Creates a new object to interface with the fingerprint scanner
-//FPS_GT511C3::FPS_GT511C3(uint8_t rx, uint8_t tx)
-FPS_GT511C3::FPS_GT511C3()	// Serial pins pre-defined
+//FPS_GT521F32::FPS_GT521F32(uint8_t rx, uint8_t tx)
+FPS_GT521F32::FPS_GT521F32()	// Serial pins pre-defined
 	//: _serial(rx,tx)
 {
 	//pin_RX = rx;
@@ -246,7 +249,7 @@ FPS_GT511C3::FPS_GT511C3()	// Serial pins pre-defined
 };
 
 // destructor
-FPS_GT511C3::~FPS_GT511C3()
+FPS_GT521F32::~FPS_GT521F32()
 {
 	//_serial.~SoftwareSerial();
 	Serial1.~USARTSerial();
@@ -260,7 +263,7 @@ FPS_GT511C3::~FPS_GT511C3()
 #pragma region -= Device Commands =-
 #endif  //__GNUC__
 //Initialises the device and gets ready for commands
-void FPS_GT511C3::Open()
+void FPS_GT521F32::Open()
 {
 	if (UseSerialDebug) Serial.println("FPS - Open");
 	Command_Packet* cp = new Command_Packet();
@@ -279,7 +282,7 @@ void FPS_GT511C3::Open()
 
 // According to the DataSheet, this does nothing...
 // Implemented it for completeness.
-void FPS_GT511C3::Close()
+void FPS_GT521F32::Close()
 {
 	if (UseSerialDebug) Serial.println("FPS - Close");
 	Command_Packet* cp = new Command_Packet();
@@ -299,7 +302,7 @@ void FPS_GT511C3::Close()
 // Turns on or off the LED backlight
 // Parameter: true turns on the backlight, false turns it off
 // Returns: True if successful, false if not
-bool FPS_GT511C3::SetLED(bool on)
+bool FPS_GT521F32::SetLED(bool on)
 {
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::CmosLed;
@@ -331,7 +334,7 @@ bool FPS_GT511C3::SetLED(bool on)
 // Parameter: 9600, 19200, 38400, 57600, 115200
 // Returns: True if success, false if invalid baud
 // NOTE: Untested (don't have a logic level changer and a voltage divider is too slow)
-bool FPS_GT511C3::ChangeBaudRate(unsigned long baud)
+bool FPS_GT521F32::ChangeBaudRate(unsigned long baud)
 {
 	if ((baud == 9600) || (baud == 19200) || (baud == 38400) || (baud == 57600) || (baud == 115200))
 	{
@@ -361,7 +364,7 @@ bool FPS_GT511C3::ChangeBaudRate(unsigned long baud)
 
 // Gets the number of enrolled fingerprints
 // Return: The total number of enrolled fingerprints
-int FPS_GT511C3::GetEnrollCount()
+int FPS_GT521F32::GetEnrollCount()
 {
 	if (UseSerialDebug) Serial.println("FPS - GetEnrolledCount");
 	Command_Packet* cp = new Command_Packet();
@@ -385,7 +388,7 @@ int FPS_GT511C3::GetEnrollCount()
 // Parameter: 0-2999, if using GT-521F52
 //            0-199, if using GT-521F32/GT-511C3
 // Return: True if the ID number is enrolled, false if not
-bool FPS_GT511C3::CheckEnrolled(int id)
+bool FPS_GT521F32::CheckEnrolled(int id)
 {
 	if (UseSerialDebug) Serial.println("FPS - CheckEnrolled");
 	Command_Packet* cp = new Command_Packet();
@@ -410,7 +413,7 @@ bool FPS_GT511C3::CheckEnrolled(int id)
 //	1 - Database is full
 //	2 - Invalid Position
 //	3 - Position(ID) is already used
-int FPS_GT511C3::EnrollStart(int id)
+int FPS_GT521F32::EnrollStart(int id)
 {
 	if (UseSerialDebug) Serial.println("FPS - EnrollStart");
 	Command_Packet* cp = new Command_Packet();
@@ -438,7 +441,7 @@ int FPS_GT511C3::EnrollStart(int id)
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll1()
+int FPS_GT521F32::Enroll1()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll1");
 	Command_Packet* cp = new Command_Packet();
@@ -467,7 +470,7 @@ int FPS_GT511C3::Enroll1()
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll2()
+int FPS_GT521F32::Enroll2()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll2");
 	Command_Packet* cp = new Command_Packet();
@@ -497,7 +500,7 @@ int FPS_GT511C3::Enroll2()
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll3()
+int FPS_GT521F32::Enroll3()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll3");
 	Command_Packet* cp = new Command_Packet();
@@ -522,7 +525,7 @@ int FPS_GT511C3::Enroll3()
 
 // Checks to see if a finger is pressed on the FPS
 // Return: true if finger pressed, false if not
-bool FPS_GT511C3::IsPressFinger()
+bool FPS_GT521F32::IsPressFinger()
 {
 	//if (UseSerialDebug) Serial.println("FPS - IsPressFinger");
 	Command_Packet* cp = new Command_Packet();
@@ -546,7 +549,7 @@ bool FPS_GT511C3::IsPressFinger()
 // Parameter: 0-2999, if using GT-521F52 (id number to be deleted)
 //            0-199, if using GT-521F32/GT-511C3(id number to be deleted)
 // Returns: true if successful, false if position invalid
-bool FPS_GT511C3::DeleteID(int id)
+bool FPS_GT521F32::DeleteID(int id)
 {
 	if (UseSerialDebug) Serial.println("FPS - DeleteID");
 	Command_Packet* cp = new Command_Packet();
@@ -564,7 +567,7 @@ bool FPS_GT511C3::DeleteID(int id)
 
 // Deletes all IDs (enrollments) from the database
 // Returns: true if successful, false if db is empty
-bool FPS_GT511C3::DeleteAll()
+bool FPS_GT521F32::DeleteAll()
 {
 	if (UseSerialDebug) Serial.println("FPS - DeleteAll");
 	Command_Packet* cp = new Command_Packet();
@@ -587,7 +590,7 @@ bool FPS_GT511C3::DeleteAll()
 //	1 - Invalid Position
 //	2 - ID is not in use
 //	3 - Verified FALSE (not the correct finger)
-int FPS_GT511C3::Verify1_1(int id)
+int FPS_GT521F32::Verify1_1(int id)
 {
 	if (UseSerialDebug) Serial.println("FPS - Verify1_1");
 	Command_Packet* cp = new Command_Packet();
@@ -618,7 +621,7 @@ int FPS_GT511C3::Verify1_1(int id)
 //      Failed to find the fingerprint in the database
 // 	     3000, if using GT-521F52
 //           200, if using GT-521F32/GT-511C3
-int FPS_GT511C3::Identify1_N()
+int FPS_GT521F32::Identify1_N()
 {
 	if (UseSerialDebug) Serial.println("FPS - Identify1_N");
 	Command_Packet* cp = new Command_Packet();
@@ -640,7 +643,7 @@ int FPS_GT511C3::Identify1_N()
 // Parameter: true for high quality image(slower), false for low quality image (faster)
 // Generally, use high quality for enrollment, and low quality for verification/identification
 // Returns: True if ok, false if no finger pressed
-bool FPS_GT511C3::CaptureFinger(bool highquality)
+bool FPS_GT521F32::CaptureFinger(bool highquality)
 {
 	if (UseSerialDebug) Serial.println("FPS - CaptureFinger");
 	Command_Packet* cp = new Command_Packet();
@@ -675,7 +678,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
 // Returns: True (device confirming download starting)
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
-//bool FPS_GT511C3::GetImage()
+//bool FPS_GT521F32::GetImage()
 //{
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
@@ -687,7 +690,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
 // Returns: True (device confirming download starting)
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
-//bool FPS_GT511C3::GetRawImage()
+//bool FPS_GT521F32::GetRawImage()
 //{
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
@@ -703,7 +706,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
 //	2 - ID not used (no template to download
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
-//int FPS_GT511C3::GetTemplate(int id)
+//int FPS_GT521F32::GetTemplate(int id)
 //{
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
@@ -722,7 +725,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
 //	203 - Device error
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
-//int FPS_GT511C3::SetTemplate(byte* tmplt, int id, bool duplicateCheck)
+//int FPS_GT521F32::SetTemplate(byte* tmplt, int id, bool duplicateCheck)
 //{
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
@@ -732,7 +735,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
 // resets the Data_Packet class, and gets ready to download
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
-//void FPS_GT511C3::StartDataDownload()
+//void FPS_GT521F32::StartDataDownload()
 //{
 	// Not implemented due to memory restrictions on the arduino
 	// may revisit this if I find a need for it
@@ -766,7 +769,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
 #pragma region -= Private Methods =-
 #endif  //__GNUC__
 // Sends the command to the software serial channel
-void FPS_GT511C3::SendCommand(byte cmd[], int length)
+void FPS_GT521F32::SendCommand(byte cmd[], int length)
 {
 	//_serial.write(cmd, length);
 	Serial1.write(cmd, length);
@@ -779,7 +782,7 @@ void FPS_GT511C3::SendCommand(byte cmd[], int length)
 };
 
 // Gets the response to the command from the software serial channel (and waits for it)
-Response_Packet* FPS_GT511C3::GetResponse()
+Response_Packet* FPS_GT521F32::GetResponse()
 {
 	byte firstbyte = 0;
 	bool done = false;
@@ -816,7 +819,7 @@ Response_Packet* FPS_GT511C3::GetResponse()
 };
 
 // sends the bye aray to the serial debugger in our hex format EX: "00 AF FF 10 00 13"
-void FPS_GT511C3::SendToSerial(byte data[], int length)
+void FPS_GT521F32::SendToSerial(byte data[], int length)
 {
   boolean first=true;
   Serial.print("\"");
@@ -829,7 +832,7 @@ void FPS_GT511C3::SendToSerial(byte data[], int length)
 }
 
 // sends a byte to the serial debugger in the hex format we want EX "0F"
-void FPS_GT511C3::serialPrintHex(byte data)
+void FPS_GT521F32::serialPrintHex(byte data)
 {
   char tmp[16];
   sprintf(tmp, "%.2X",data);

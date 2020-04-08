@@ -31,11 +31,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  13 .debug_macro  000382e6  00000000  00000000  0011f7cd  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   0002af67  00000000  00000000  00157ab3  2**0
+ 14 .debug_line   0002af6a  00000000  00000000  00157ab3  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    000ffee3  00000000  00000000  00182a1a  2**0
+ 15 .debug_str    000ffeee  00000000  00000000  00182a1d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_frame  0000d318  00000000  00000000  00282900  2**2
+ 16 .debug_frame  0000d318  00000000  00000000  0028290c  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1377,7 +1377,7 @@ const int keySwitch = D5;                     // digital pin for the electro-mec
 const int greenLED  = D6;                     // green LED signifies an authorized
 const int busyLED   = D7;                     // amber LED signifies the system is busy (usually with registration mode). Same as the Xenon's on-board blue LED
 const int redLED    = D8;                     // red LED signifies an unauthorized user
-FPS_GT511C3 fps;                              // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
+FPS_GT521F32 fps;                             // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
    d46d0:	4d31      	ldr	r5, [pc, #196]	; (d4798 <_GLOBAL__sub_I_SystemMode+0xd4>)
    d46d2:	4f32      	ldr	r7, [pc, #200]	; (d479c <_GLOBAL__sub_I_SystemMode+0xd8>)
 
@@ -1402,7 +1402,7 @@ const int keySwitch = D5;                     // digital pin for the electro-mec
 const int greenLED  = D6;                     // green LED signifies an authorized
 const int busyLED   = D7;                     // amber LED signifies the system is busy (usually with registration mode). Same as the Xenon's on-board blue LED
 const int redLED    = D8;                     // red LED signifies an unauthorized user
-FPS_GT511C3 fps;                              // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
+FPS_GT521F32 fps;                             // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
    d46ea:	4628      	mov	r0, r5
    d46ec:	f000 f992 	bl	d4a14 <_ZN11FPS_GT511C3C1Ev>
    d46f0:	463a      	mov	r2, r7
@@ -2102,8 +2102,8 @@ byte Response_Packet::GetHighByte(word w)
 #pragma region -= Constructor/Destructor =-
 #endif  //__GNUC__
 // Creates a new object to interface with the fingerprint scanner
-//FPS_GT511C3::FPS_GT511C3(uint8_t rx, uint8_t tx)
-FPS_GT511C3::FPS_GT511C3()	// Serial pins pre-defined
+//FPS_GT521F32::FPS_GT521F32(uint8_t rx, uint8_t tx)
+FPS_GT521F32::FPS_GT521F32()	// Serial pins pre-defined
    d4a14:	b510      	push	{r4, lr}
    d4a16:	4604      	mov	r4, r0
 	//pin_RX = rx;
@@ -2125,7 +2125,7 @@ FPS_GT511C3::FPS_GT511C3()	// Serial pins pre-defined
 000d4a2c <_ZN11FPS_GT511C3D1Ev>:
 
 // destructor
-FPS_GT511C3::~FPS_GT511C3()
+FPS_GT521F32::~FPS_GT521F32()
    d4a2c:	b510      	push	{r4, lr}
    d4a2e:	4604      	mov	r4, r0
 {
@@ -2148,7 +2148,7 @@ FPS_GT511C3::~FPS_GT511C3()
 }
 
 // sends a byte to the serial debugger in the hex format we want EX "0F"
-void FPS_GT511C3::serialPrintHex(byte data)
+void FPS_GT521F32::serialPrintHex(byte data)
 {
    d4a48:	b51f      	push	{r0, r1, r2, r3, r4, lr}
   char tmp[16];
@@ -2171,7 +2171,7 @@ void FPS_GT511C3::serialPrintHex(byte data)
 };
 
 // sends the bye aray to the serial debugger in our hex format EX: "00 AF FF 10 00 13"
-void FPS_GT511C3::SendToSerial(byte data[], int length)
+void FPS_GT521F32::SendToSerial(byte data[], int length)
 {
    d4a68:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
    d4a6a:	460d      	mov	r5, r1
@@ -2186,7 +2186,7 @@ void FPS_GT511C3::SendToSerial(byte data[], int length)
 };
 
 // sends the bye aray to the serial debugger in our hex format EX: "00 AF FF 10 00 13"
-void FPS_GT511C3::SendToSerial(byte data[], int length)
+void FPS_GT521F32::SendToSerial(byte data[], int length)
 {
   boolean first=true;
    d4a7c:	2301      	movs	r3, #1
@@ -2207,7 +2207,7 @@ void FPS_GT511C3::SendToSerial(byte data[], int length)
    d4a96:	f7ff ffd7 	bl	d4a48 <_ZN11FPS_GT511C314serialPrintHexEh>
    d4a9a:	2300      	movs	r3, #0
 // sends the bye aray to the serial debugger in our hex format EX: "00 AF FF 10 00 13"
-void FPS_GT511C3::SendToSerial(byte data[], int length)
+void FPS_GT521F32::SendToSerial(byte data[], int length)
 {
   boolean first=true;
   Serial.print("\"");
@@ -2237,7 +2237,7 @@ void FPS_GT511C3::SendToSerial(byte data[], int length)
 #pragma region -= Private Methods =-
 #endif  //__GNUC__
 // Sends the command to the software serial channel
-void FPS_GT511C3::SendCommand(byte cmd[], int length)
+void FPS_GT521F32::SendCommand(byte cmd[], int length)
 {
    d4ab4:	b570      	push	{r4, r5, r6, lr}
    d4ab6:	4604      	mov	r4, r0
@@ -2284,7 +2284,7 @@ void FPS_GT511C3::SendCommand(byte cmd[], int length)
 };
 
 // Gets the response to the command from the software serial channel (and waits for it)
-Response_Packet* FPS_GT511C3::GetResponse()
+Response_Packet* FPS_GT521F32::GetResponse()
 {
    d4af4:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
    d4af6:	4605      	mov	r5, r0
@@ -2402,7 +2402,7 @@ Response_Packet* FPS_GT511C3::GetResponse()
 #pragma region -= Device Commands =-
 #endif  //__GNUC__
 //Initialises the device and gets ready for commands
-void FPS_GT511C3::Open()
+void FPS_GT521F32::Open()
 {
    d4b88:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
 	if (UseSerialDebug) Serial.println("FPS - Open");
@@ -2411,7 +2411,7 @@ void FPS_GT511C3::Open()
 #pragma region -= Device Commands =-
 #endif  //__GNUC__
 //Initialises the device and gets ready for commands
-void FPS_GT511C3::Open()
+void FPS_GT521F32::Open()
 {
    d4b8c:	4605      	mov	r5, r0
 	if (UseSerialDebug) Serial.println("FPS - Open");
@@ -2434,7 +2434,7 @@ void FPS_GT511C3::Open()
 	cp->Parameter[3] = 0x00;
    d4baa:	7103      	strb	r3, [r0, #4]
 //Initialises the device and gets ready for commands
-void FPS_GT511C3::Open()
+void FPS_GT521F32::Open()
 {
 	if (UseSerialDebug) Serial.println("FPS - Open");
 	Command_Packet* cp = new Command_Packet();
@@ -2442,7 +2442,7 @@ void FPS_GT511C3::Open()
    d4bac:	7007      	strb	r7, [r0, #0]
 #endif  //__GNUC__
 //Initialises the device and gets ready for commands
-void FPS_GT511C3::Open()
+void FPS_GT521F32::Open()
 {
 	if (UseSerialDebug) Serial.println("FPS - Open");
 	Command_Packet* cp = new Command_Packet();
@@ -2496,7 +2496,7 @@ void FPS_GT511C3::Open()
 // Turns on or off the LED backlight
 // Parameter: true turns on the backlight, false turns it off
 // Returns: True if successful, false if not
-bool FPS_GT511C3::SetLED(bool on)
+bool FPS_GT521F32::SetLED(bool on)
 {
    d4be4:	b570      	push	{r4, r5, r6, lr}
    d4be6:	4605      	mov	r5, r0
@@ -2506,7 +2506,7 @@ bool FPS_GT511C3::SetLED(bool on)
 // Turns on or off the LED backlight
 // Parameter: true turns on the backlight, false turns it off
 // Returns: True if successful, false if not
-bool FPS_GT511C3::SetLED(bool on)
+bool FPS_GT521F32::SetLED(bool on)
 {
    d4bea:	460e      	mov	r6, r1
 	Command_Packet* cp = new Command_Packet();
@@ -2517,7 +2517,7 @@ bool FPS_GT511C3::SetLED(bool on)
 // Turns on or off the LED backlight
 // Parameter: true turns on the backlight, false turns it off
 // Returns: True if successful, false if not
-bool FPS_GT511C3::SetLED(bool on)
+bool FPS_GT521F32::SetLED(bool on)
 {
 	Command_Packet* cp = new Command_Packet();
    d4bf4:	4604      	mov	r4, r0
@@ -2606,7 +2606,7 @@ bool FPS_GT511C3::SetLED(bool on)
 // Parameter: 0-2999, if using GT-521F52
 //            0-199, if using GT-521F32/GT-511C3
 // Return: True if the ID number is enrolled, false if not
-bool FPS_GT511C3::CheckEnrolled(int id)
+bool FPS_GT521F32::CheckEnrolled(int id)
 {
    d4c60:	b570      	push	{r4, r5, r6, lr}
 	if (UseSerialDebug) Serial.println("FPS - CheckEnrolled");
@@ -2615,7 +2615,7 @@ bool FPS_GT511C3::CheckEnrolled(int id)
 // Parameter: 0-2999, if using GT-521F52
 //            0-199, if using GT-521F32/GT-511C3
 // Return: True if the ID number is enrolled, false if not
-bool FPS_GT511C3::CheckEnrolled(int id)
+bool FPS_GT521F32::CheckEnrolled(int id)
 {
    d4c64:	4604      	mov	r4, r0
    d4c66:	460e      	mov	r6, r1
@@ -2634,7 +2634,7 @@ bool FPS_GT511C3::CheckEnrolled(int id)
    d4c7e:	4631      	mov	r1, r6
 //            0-199, if using GT-521F32/GT-511C3
 // Return: True if the ID number is enrolled, false if not
-bool FPS_GT511C3::CheckEnrolled(int id)
+bool FPS_GT521F32::CheckEnrolled(int id)
 {
 	if (UseSerialDebug) Serial.println("FPS - CheckEnrolled");
 	Command_Packet* cp = new Command_Packet();
@@ -2685,7 +2685,7 @@ bool FPS_GT511C3::CheckEnrolled(int id)
 //	1 - Database is full
 //	2 - Invalid Position
 //	3 - Position(ID) is already used
-int FPS_GT511C3::EnrollStart(int id)
+int FPS_GT521F32::EnrollStart(int id)
 {
    d4cbc:	b570      	push	{r4, r5, r6, lr}
 	if (UseSerialDebug) Serial.println("FPS - EnrollStart");
@@ -2694,7 +2694,7 @@ int FPS_GT511C3::EnrollStart(int id)
 //	1 - Database is full
 //	2 - Invalid Position
 //	3 - Position(ID) is already used
-int FPS_GT511C3::EnrollStart(int id)
+int FPS_GT521F32::EnrollStart(int id)
 {
    d4cc0:	4604      	mov	r4, r0
    d4cc2:	460e      	mov	r6, r1
@@ -2713,7 +2713,7 @@ int FPS_GT511C3::EnrollStart(int id)
    d4cda:	4631      	mov	r1, r6
 //	2 - Invalid Position
 //	3 - Position(ID) is already used
-int FPS_GT511C3::EnrollStart(int id)
+int FPS_GT521F32::EnrollStart(int id)
 {
 	if (UseSerialDebug) Serial.println("FPS - EnrollStart");
 	Command_Packet* cp = new Command_Packet();
@@ -2799,7 +2799,7 @@ int FPS_GT511C3::EnrollStart(int id)
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll1()
+int FPS_GT521F32::Enroll1()
 {
    d4d44:	b570      	push	{r4, r5, r6, lr}
 	if (UseSerialDebug) Serial.println("FPS - Enroll1");
@@ -2808,7 +2808,7 @@ int FPS_GT511C3::Enroll1()
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll1()
+int FPS_GT521F32::Enroll1()
 {
    d4d48:	4604      	mov	r4, r0
 	if (UseSerialDebug) Serial.println("FPS - Enroll1");
@@ -2824,7 +2824,7 @@ int FPS_GT511C3::Enroll1()
    d4d5e:	7003      	strb	r3, [r0, #0]
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll1()
+int FPS_GT521F32::Enroll1()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll1");
 	Command_Packet* cp = new Command_Packet();
@@ -2834,7 +2834,7 @@ int FPS_GT511C3::Enroll1()
    d4d62:	f7ff fd49 	bl	d47f8 <_ZN14Command_Packet14GetPacketBytesEv>
 	delete cp;
    d4d66:	2107      	movs	r1, #7
-int FPS_GT511C3::Enroll1()
+int FPS_GT521F32::Enroll1()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll1");
 	Command_Packet* cp = new Command_Packet();
@@ -2917,7 +2917,7 @@ int FPS_GT511C3::Enroll1()
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll2()
+int FPS_GT521F32::Enroll2()
 {
    d4dcc:	b570      	push	{r4, r5, r6, lr}
 	if (UseSerialDebug) Serial.println("FPS - Enroll2");
@@ -2926,7 +2926,7 @@ int FPS_GT511C3::Enroll2()
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll2()
+int FPS_GT521F32::Enroll2()
 {
    d4dd0:	4604      	mov	r4, r0
 	if (UseSerialDebug) Serial.println("FPS - Enroll2");
@@ -2942,7 +2942,7 @@ int FPS_GT511C3::Enroll2()
    d4de6:	7003      	strb	r3, [r0, #0]
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll2()
+int FPS_GT521F32::Enroll2()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll2");
 	Command_Packet* cp = new Command_Packet();
@@ -2952,7 +2952,7 @@ int FPS_GT511C3::Enroll2()
    d4dea:	f7ff fd05 	bl	d47f8 <_ZN14Command_Packet14GetPacketBytesEv>
 	delete cp;
    d4dee:	2107      	movs	r1, #7
-int FPS_GT511C3::Enroll2()
+int FPS_GT521F32::Enroll2()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll2");
 	Command_Packet* cp = new Command_Packet();
@@ -3035,7 +3035,7 @@ int FPS_GT511C3::Enroll2()
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll3()
+int FPS_GT521F32::Enroll3()
 {
    d4e54:	b570      	push	{r4, r5, r6, lr}
 	if (UseSerialDebug) Serial.println("FPS - Enroll3");
@@ -3044,7 +3044,7 @@ int FPS_GT511C3::Enroll3()
 //	1 - Enroll Failed
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll3()
+int FPS_GT521F32::Enroll3()
 {
    d4e58:	4604      	mov	r4, r0
 	if (UseSerialDebug) Serial.println("FPS - Enroll3");
@@ -3060,7 +3060,7 @@ int FPS_GT511C3::Enroll3()
    d4e6e:	7003      	strb	r3, [r0, #0]
 //	2 - Bad finger
 //	3 - ID in use
-int FPS_GT511C3::Enroll3()
+int FPS_GT521F32::Enroll3()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll3");
 	Command_Packet* cp = new Command_Packet();
@@ -3070,7 +3070,7 @@ int FPS_GT511C3::Enroll3()
    d4e72:	f7ff fcc1 	bl	d47f8 <_ZN14Command_Packet14GetPacketBytesEv>
 	delete cp;
    d4e76:	2107      	movs	r1, #7
-int FPS_GT511C3::Enroll3()
+int FPS_GT521F32::Enroll3()
 {
 	if (UseSerialDebug) Serial.println("FPS - Enroll3");
 	Command_Packet* cp = new Command_Packet();
@@ -3152,7 +3152,7 @@ int FPS_GT511C3::Enroll3()
 
 // Checks to see if a finger is pressed on the FPS
 // Return: true if finger pressed, false if not
-bool FPS_GT511C3::IsPressFinger()
+bool FPS_GT521F32::IsPressFinger()
 {
    d4edc:	b570      	push	{r4, r5, r6, lr}
    d4ede:	4605      	mov	r5, r0
@@ -3165,7 +3165,7 @@ bool FPS_GT511C3::IsPressFinger()
    d4ee8:	7003      	strb	r3, [r0, #0]
 // Checks to see if a finger is pressed on the FPS
 // Return: true if finger pressed, false if not
-bool FPS_GT511C3::IsPressFinger()
+bool FPS_GT521F32::IsPressFinger()
 {
 	//if (UseSerialDebug) Serial.println("FPS - IsPressFinger");
 	Command_Packet* cp = new Command_Packet();
@@ -3175,7 +3175,7 @@ bool FPS_GT511C3::IsPressFinger()
    d4eec:	f7ff fc84 	bl	d47f8 <_ZN14Command_Packet14GetPacketBytesEv>
 	delete cp;
    d4ef0:	2107      	movs	r1, #7
-bool FPS_GT511C3::IsPressFinger()
+bool FPS_GT521F32::IsPressFinger()
 {
 	//if (UseSerialDebug) Serial.println("FPS - IsPressFinger");
 	Command_Packet* cp = new Command_Packet();
@@ -3250,7 +3250,7 @@ bool FPS_GT511C3::IsPressFinger()
 //      Failed to find the fingerprint in the database
 // 	     3000, if using GT-521F52
 //           200, if using GT-521F32/GT-511C3
-int FPS_GT511C3::Identify1_N()
+int FPS_GT521F32::Identify1_N()
 {
    d4f34:	b570      	push	{r4, r5, r6, lr}
 	if (UseSerialDebug) Serial.println("FPS - Identify1_N");
@@ -3259,7 +3259,7 @@ int FPS_GT511C3::Identify1_N()
 //      Failed to find the fingerprint in the database
 // 	     3000, if using GT-521F52
 //           200, if using GT-521F32/GT-511C3
-int FPS_GT511C3::Identify1_N()
+int FPS_GT521F32::Identify1_N()
 {
    d4f38:	4604      	mov	r4, r0
 	if (UseSerialDebug) Serial.println("FPS - Identify1_N");
@@ -3275,7 +3275,7 @@ int FPS_GT511C3::Identify1_N()
    d4f4e:	7003      	strb	r3, [r0, #0]
 // 	     3000, if using GT-521F52
 //           200, if using GT-521F32/GT-511C3
-int FPS_GT511C3::Identify1_N()
+int FPS_GT521F32::Identify1_N()
 {
 	if (UseSerialDebug) Serial.println("FPS - Identify1_N");
 	Command_Packet* cp = new Command_Packet();
@@ -3285,7 +3285,7 @@ int FPS_GT511C3::Identify1_N()
    d4f52:	f7ff fc51 	bl	d47f8 <_ZN14Command_Packet14GetPacketBytesEv>
 	delete cp;
    d4f56:	2107      	movs	r1, #7
-int FPS_GT511C3::Identify1_N()
+int FPS_GT521F32::Identify1_N()
 {
 	if (UseSerialDebug) Serial.println("FPS - Identify1_N");
 	Command_Packet* cp = new Command_Packet();
@@ -3343,7 +3343,7 @@ int FPS_GT511C3::Identify1_N()
 // Parameter: true for high quality image(slower), false for low quality image (faster)
 // Generally, use high quality for enrollment, and low quality for verification/identification
 // Returns: True if ok, false if no finger pressed
-bool FPS_GT511C3::CaptureFinger(bool highquality)
+bool FPS_GT521F32::CaptureFinger(bool highquality)
 {
    d4f98:	b570      	push	{r4, r5, r6, lr}
 	if (UseSerialDebug) Serial.println("FPS - CaptureFinger");
@@ -3352,7 +3352,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
 // Parameter: true for high quality image(slower), false for low quality image (faster)
 // Generally, use high quality for enrollment, and low quality for verification/identification
 // Returns: True if ok, false if no finger pressed
-bool FPS_GT511C3::CaptureFinger(bool highquality)
+bool FPS_GT521F32::CaptureFinger(bool highquality)
 {
    d4f9c:	4606      	mov	r6, r0
    d4f9e:	460d      	mov	r5, r1
@@ -3368,7 +3368,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
    d4fb2:	2360      	movs	r3, #96	; 0x60
 // Generally, use high quality for enrollment, and low quality for verification/identification
 // Returns: True if ok, false if no finger pressed
-bool FPS_GT511C3::CaptureFinger(bool highquality)
+bool FPS_GT521F32::CaptureFinger(bool highquality)
 {
 	if (UseSerialDebug) Serial.println("FPS - CaptureFinger");
 	Command_Packet* cp = new Command_Packet();
