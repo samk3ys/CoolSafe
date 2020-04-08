@@ -19,6 +19,9 @@ const int unlockTime = 1000;                  // milliseconds to keep solenoid p
 const int delayTime = 100;                    // milliseconds to delay after a round of the main infinite loop
 const unsigned long UPDATE_INTERVAL = 1000;   // milliseconds between updating BLE data
 unsigned long lastUpdate = 0;                 // used for tracking BLE update interval
+const unsigned long ENROLLMENT_WAIT = 60;     // seconds to wait for fingerprint enrollment
+unsigned long enrollStartTime = 0;            // tracks time since an enrollment started
+unsigned long enrollmentWatch = 0;            // tracks how much time has passed while waiting for fingerprint enrollment
 
 // I/O
 const int buzzer    = A0;                     // digital pin for sound output
@@ -126,7 +129,15 @@ int identifyUser() {
   return id;  // Return id of the user from the FPS
 }
 
-void enrollUser() {
+bool enrollUser() {
+  // Enroll a new fingerprint for the scanner. Returns true if successful. Returns false if timed out or error.
+
+  // Signal to users that the system is busy. Normal functions won't work at this time
+  digitalWrite(busyLED, HIGH);
+
+  // Jot down the time this enrollment started.
+  enrollStartTime = millis();
+
   // find open enroll id
   int enrollid = 0;
   bool usedid = true;
@@ -139,7 +150,13 @@ void enrollUser() {
   // enroll w/ 3 seperate scans
   Serial.print("Press finger to Enroll #");
   Serial.println(enrollid);
-  while(fps.IsPressFinger() == false) delay(100);
+  while(fps.IsPressFinger() == false) {
+    if ( (millis() - enrollStartTime) >= (ENROLLMENT_WAIT * 1000) ) {
+      digitalWrite(busyLED, LOW);
+      return false; // exit w/ timeout function if we've been here for too long
+    }
+    delay(100);
+  }
   bool bret = fps.CaptureFinger(true);  // true = use high quality scan
   int iret = 0;
   if (bret != false) {
@@ -149,7 +166,13 @@ void enrollUser() {
     fps.Enroll1(); 
     while(fps.IsPressFinger() == true) delay(100);
     Serial.println("Press same finger again");
-    while(fps.IsPressFinger() == false) delay(100);
+    while(fps.IsPressFinger() == false) {
+      if ( (millis() - enrollStartTime) >= (ENROLLMENT_WAIT * 1000) ) {
+        digitalWrite(busyLED, LOW);
+        return false; // exit w/ timeout function if we've been here for too long
+      }
+      delay(100);
+    }
     bret = fps.CaptureFinger(true);
     if (bret != false) {
       // Successful second scan
@@ -158,7 +181,13 @@ void enrollUser() {
       fps.Enroll2();
       while(fps.IsPressFinger() == true) delay(100);
       Serial.println("Press same finger yet again");
-      while(fps.IsPressFinger() == false) delay(100);
+      while(fps.IsPressFinger() == false)  {
+        if ( (millis() - enrollStartTime) >= (ENROLLMENT_WAIT * 1000) ) {
+          digitalWrite(busyLED, LOW);
+          return false; // exit w/ timeout function if we've been here for too long
+        }
+        delay(100);
+      }
       bret = fps.CaptureFinger(true);
       if (bret != false) {
         // Successful third scan
@@ -167,7 +196,10 @@ void enrollUser() {
         iret = fps.Enroll3();
         if (iret == 0) {
           // All scans successful
-          goodFeedback();
+          //goodFeedback();
+          digitalWrite(greenLED, HIGH);
+          play(buzzer, arraySize(startDuration), startSound, startDuration);
+          digitalWrite(greenLED, LOW);
           Serial.println("Enrolling Successful");
         }
         else {
@@ -175,22 +207,34 @@ void enrollUser() {
           badFeedback();
           Serial.print("Enrolling Failed with error code:");
           Serial.println(iret);
+          digitalWrite(busyLED, LOW);
+          return false; // stop w/ failure
         }
       }
       else {
         badFeedback();
         Serial.println("Failed to capture third finger");
+        digitalWrite(busyLED, LOW);
+        return false; // stop w/ failure
       }
     }
     else {
       badFeedback();
       Serial.println("Failed to capture second finger");
+      digitalWrite(busyLED, LOW);
+      return false; // stop w/ failure
     }
   }
   else {
     badFeedback();
     Serial.println("Failed to capture first finger");
+    digitalWrite(busyLED, LOW);
+    return false; // stop w/ failure
   }
+
+  // Let the users know the system is back to normal
+  digitalWrite(busyLED, LOW);
+  return true;  // exit w/ success
 }
 
 void LEDsequence() {
@@ -266,10 +310,8 @@ void loop() {
   // Check for users trying to access using the electro-mechanical tumbler lock switch
   if (digitalRead(keySwitch) == HIGH && keySwitchFlag == false) {     // Key switch turned on
     delay(500);
-    if (digitalRead(keySwitch) == LOW) {  // Enter registration mode manually by flicking the switch on and off quickly
-      digitalWrite(busyLED, HIGH);
+    if (digitalRead(keySwitch) == LOW) {  // Enter registration mode manually by flicking the switch on and off quickly      
       enrollUser();
-      digitalWrite(busyLED, LOW);
     }
     else {  // normal use of switch to open lock-bin
       openBin();                      // Allow access. Includes good feedback
