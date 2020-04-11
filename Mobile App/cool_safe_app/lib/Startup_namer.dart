@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-//import 'package:video_player/video_player.dart';
 
-createRegAlertDialog(BuildContext context){
+createRegAlertDialog(BuildContext context, List<String> users){
   return showDialog(context: context, builder: (context){
     return AlertDialog(
       title: Text("Registration Start"),
@@ -12,6 +11,49 @@ createRegAlertDialog(BuildContext context){
           child: Text("Got it!"),
           onPressed: () {
             Navigator.pop(context);
+            //if (good scan)----BLE CODE
+            createNameAlertDialog(context).then((onValue){
+              users.add(onValue);
+              createSignalAlertDialog(context, "Add");
+            });
+          },
+        )
+      ],
+    );
+  });
+}
+
+createEditAlertDialog(BuildContext context, int id, List<String> users){
+  return showDialog(context: context, builder: (context){
+    return AlertDialog(
+      title: Text("New Username"),
+      actions: <Widget>[
+        MaterialButton(
+          child: Text("OK!"),
+          onPressed: () {
+            Navigator.pop(context);
+            createNameAlertDialog(context).then((onValue){
+              users[id] = onValue;
+            });
+          },
+        )
+      ],
+    );
+  });
+}
+
+createSignalAlertDialog(BuildContext context, String command){
+  return showDialog(context: context, builder: (context){
+    return AlertDialog(
+      title: Text("$command signal sent"),
+      actions: <Widget>[
+        MaterialButton(
+          child: Text("OK!"),
+          onPressed: () {
+            Navigator.pop(context);
+            if (command == "Delete") {
+              Navigator.pop(context);
+            }
           },
         )
       ],
@@ -20,54 +62,42 @@ createRegAlertDialog(BuildContext context){
 }
 
 //Use signal format ID/OPERATION/AUTHORIZED/NAME
-void AddUser(BuildContext context){
-  //send signal ID/ADD/YES/NAME
-  createRegAlertDialog(context);
-//  if (good scan)
+void AddUser(BuildContext context, List<String> users){
+  //send signal ID/ADD/YES/NAME----BLE CODE
+  createRegAlertDialog(context, users);
+}  //AddUser()
+
+void EditUser(BuildContext context, int id, List<String> users){
+  //send signal ID/EDIT/AUTHORIZED/NAME----BLE CODE
+//  createEditAlertDialog(context, id, users);
   createNameAlertDialog(context).then((onValue){
-//  Do something with onValue (for example:
-//    return showDialog(context: context, builder: (context){
-//      return AlertDialog(
-//        title: Text(onValue),
-//        actions: <Widget>[
-//          MaterialButton(
-//            child: Text("Test!"),
-//            onPressed: () {
-//              Navigator.pop(context);
-//            },
-//          )
-//        ],
-//      );
-//    });
+    users[id] = onValue;
+    createSignalAlertDialog(context, "Edit");
   });
-} //AddUser()
+}  //EditUser()
 
-void EditUser(){
-  null;
-  //EditUser()
-}
+void AbleUser(BuildContext context){
+  //send signal ID/ABLE/~(AUTHORIZED)/NAME----BLE CODE
+  createSignalAlertDialog(context, "Disable/Enable");
+}  //AbleUser()
 
-void AbleUser(){
-  null;
-  //AbleUser()
-}
-
-void DeleteUser(){
-  null;
-  //DeleteUser()
-}
+void DeleteUser(BuildContext context, int id, List<String> users){
+  //send signal ID/DELETE/AUTHORIZED/NAME----BLE CODE
+  users.removeAt(id);
+  createSignalAlertDialog(context, "Delete");
+}  //DeleteUser()
 
 Future<String> createNameAlertDialog(BuildContext context){
   TextEditingController nameCon = TextEditingController();
   return showDialog(context: context, builder: (context){
     return AlertDialog(
-      title: Text("Registration Over"),
+      title: Text("Please give a username"),
       content: TextField(
         controller: nameCon,
       ),
       actions: <Widget>[
         MaterialButton(
-          child: Text("Hello World 2"),
+          child: Text("Done!"),
           onPressed: () {
             Navigator.of(context).pop(nameCon.text.toString());
           },
@@ -100,7 +130,7 @@ class HomeBar extends StatelessWidget {
             icon: Icon(Icons.menu),
             tooltip: 'Settings',
             onPressed: null,
-          ),*/
+          ),*/ //possible future addition
         ],
       ),
     );
@@ -137,7 +167,7 @@ class NotHomeBar extends StatelessWidget {
             icon: Icon(Icons.menu),
             tooltip: 'Return',
             onPressed: null,
-          ),*/
+          ),*/ //possible future addition
         ],
       ),
     );
@@ -145,6 +175,8 @@ class NotHomeBar extends StatelessWidget {
 } //title bar for anything not the homepage
 
 class HomePage extends StatelessWidget {
+  List<String> users = ['Sam', "Shae", "Steven", "Sylvester", "Tylor"];
+  //retrieve user list through the BLE----BLE CODE
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +194,7 @@ class HomePage extends StatelessWidget {
           MaterialButton(
             child: Text('Add New Fingerprint'),
             onPressed: () {
-              AddUser(context);
+              AddUser(context, users);
             },
           ),
           MaterialButton(
@@ -170,7 +202,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UsersPermissions()),
+                MaterialPageRoute(builder: (context) => UsersPermissions(users)),
               );
             },
           ),
@@ -180,57 +212,17 @@ class HomePage extends StatelessWidget {
   }
 } //Homepage: new fingerprint button and view permissions button
 
-/*class PermissionsButton extends Permissions {
-  Widget build(BuildContext context) {
-    MaterialButton(
-      child: Text('Name'),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Indiv())
-        );
-      },
-    );
-  }
-}
-
-class UserPermissions extends StatefulWidget {
-  @override
-  UserPermissionsState createState() => UserPermissionsState();
-}
-List<Widget> usersList(BuildContext context) {
-  List<Widget> users = new List();
-  users.add(new MaterialButton(
-    child: Text('Name1'),
-    onPressed: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Indiv())
-      );
-    },
-  ));
-  users.add(new MaterialButton(
-    child: Text('Name2'),
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Indiv())
-      );
-    },
-  ));
-  return users;
-}*/ //irrelevant now... was trying a round-about way to do something simple
-
 class UsersPermissions extends StatelessWidget {
-  List<String> users = ['Sam', "Shae", "Steven", "Sylvester", "Tylor"];
-  //retrieve user list through the BLE
+  UsersPermissions(this.users);
+  List<String> users;
 
   @override
   Widget build(BuildContext context) {
     // Material is a conceptual piece of paper on which the UI appears.
     return Scaffold(
       // Column is a vertical, linear layout.
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: <Widget>[
           NotHomeBar(
             title: Text(
@@ -243,16 +235,16 @@ class UsersPermissions extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => IndivUser(users[id], id))
+                  MaterialPageRoute(builder: (context) => IndivUser(users[id], id, users))
               );
             },
-          ), // if not working try to get block of commented code above to work
+          ),
         ],
-      ),
+      )),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          AddUser(context);
+          AddUser(context, users);
         },
       ),
     );
@@ -260,9 +252,10 @@ class UsersPermissions extends StatelessWidget {
 } //Permissions page: button for each registered fingerprint/user
 
 class IndivUser extends StatelessWidget {
-  IndivUser(this.nameIt, this.id);
-  final int id;
-  final String nameIt;
+  IndivUser(this.nameIt, this.id, this.users);
+  int id;
+  String nameIt;
+  List<String> users;
   @override
   Widget build(BuildContext context) {
     // Material is a conceptual piece of paper on which the UI appears.
@@ -279,25 +272,20 @@ class IndivUser extends StatelessWidget {
           MaterialButton(
             child: Text('Edit'),
             onPressed: () {
-              EditUser();
+              EditUser(context, id, users);
             },
-            //send edit signal through BLE
-            //edit name in array
           ),
           MaterialButton(
             child: Text('Disable/Enable'),
             onPressed: () {
-              AbleUser();
+              AbleUser(context);
             },
-            //send disable/enable signal through BLE
           ),
           MaterialButton(
             child: Text('Delete'),
             onPressed: () {
-              DeleteUser();
+              DeleteUser(context, id, users);
             },
-            //send delete signal through BLE
-            //remove name in array
           ),
         ],
       ),
