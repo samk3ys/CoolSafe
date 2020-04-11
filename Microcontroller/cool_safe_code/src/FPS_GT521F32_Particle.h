@@ -1,13 +1,16 @@
 /*
-	FPS_GT511C3.h v1.0 - Library for controlling the GT-511C3 Finger Print Scanner (FPS)
-	Created by Josh Hawley, July 23rd 2013
+	FPS_GT521F32_Particle.h v1.0 - Library for controlling the GT-521F32 Finger Print Scanner (FPS)
+	
+	Originally made for GT-511C3 FPS by Josh Hawley, July 23rd 2013
 	Licensed for non-commercial use, must include this license message
 	basically, Feel free to hack away at it, but just give me credit for my work =)
 	TLDR; Wil Wheaton's Law
+
+	Edited to work without SoftwareSerial.h for the GT-521F32 by Sam Keys, 2020
 */
 
-#ifndef FPS_GT511C3_h
-#define FPS_GT511C3_h
+#ifndef FPS_GT521F32_Particle_h
+#define FPS_GT521F32_Particle_h
 
 #include "Arduino.h"
 //#include "SoftwareSerial.h"
@@ -168,7 +171,7 @@ class Response_Packet
 /*
 	Object for controlling the GT-511C3 Finger Print Scanner (FPS)
 */
-class FPS_GT511C3
+class FPS_GT521F32
 {
  
  public:
@@ -180,11 +183,11 @@ class FPS_GT511C3
 	#pragma region -= Constructor/Destructor =-
 #endif  //__GNUC__
 	// Creates a new object to interface with the fingerprint scanner
-	//FPS_GT511C3(uint8_t rx, uint8_t tx);
-	FPS_GT511C3(); // Serial1 pins pre-defined
+	//FPS_GT521F32(uint8_t rx, uint8_t tx);
+	FPS_GT521F32(); // Serial1 pins pre-defined
 	
 	// destructor
-	~FPS_GT511C3();
+	~FPS_GT521F32();
 #ifndef __GNUC__
 	#pragma endregion
 #endif  //__GNUC__
