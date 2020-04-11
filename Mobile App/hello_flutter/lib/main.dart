@@ -54,6 +54,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+BluetoothDevice targetDevice;
+
 class _MyHomePageState extends State<MyHomePage> {
   final String SERVICE_UUID = "6e400000-b5a3-f393-e0a9-e50e24dcca9e";
   final String TX_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -63,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   FlutterBlue flutterBlue = FlutterBlue.instance;
   StreamSubscription<ScanResult> scanSubScription;
 
-  BluetoothDevice targetDevice;
+  //BluetoothDevice targetDevice;
   BluetoothCharacteristic txCharacteristic;
   BluetoothCharacteristic rxCharacteristic;
   String data;  // Holds what is received thru RXCharacteristic
@@ -255,14 +257,19 @@ class _DemoPageState extends State<DemoPage> {
       _counter = command;
     });
     
-    // Reads characteristics
-    var characteristics = service.characteristics;
-    for(BluetoothCharacteristic c in characteristics) {
-        List<int> value = await c.read();
-        print(value);
-    }
-    // Writes to a characteristic
-    await c.write([0x12, 0x34])
+    /*List<BluetoothService> services = await targetDevice.discoverServices();
+    services.forEach((service) {
+      // do something with service
+      // Reads characteristics
+      var characteristics = service.characteristics;
+      for(BluetoothCharacteristic c in characteristics) {
+          List<int> value = await c.read();
+          print(value);
+      }
+      // Writes to a characteristic
+      await c.write([0x12, 0x34]);
+    });*/
+
   }
 
   void _addUser() {

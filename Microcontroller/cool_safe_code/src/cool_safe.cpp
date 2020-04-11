@@ -20,6 +20,7 @@ void openBin();
 void goodFeedback();
 void badFeedback();
 int identifyUser();
+void enrollScanFeedback();
 bool enrollUser();
 void LEDsequence();
 void setup();
@@ -45,7 +46,7 @@ const int keySwitch = D5;                     // digital pin for the electro-mec
 const int greenLED  = D6;                     // green LED signifies an authorized
 const int busyLED   = D7;                     // amber LED signifies the system is busy (usually with registration mode). Same as the Xenon's on-board blue LED
 const int redLED    = D8;                     // red LED signifies an unauthorized user
-FPS_GT511C3 fps;                              // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
+FPS_GT521F32 fps;                             // fingerprint scanner module - uses Serial1 (Rx:pin14, Tx:pin15)
 
 // BLE Service UUID
 const BleUuid serviceUuid("6E400000-B5A3-F393-E0A9-E50E24DCCA9E");
@@ -144,6 +145,16 @@ int identifyUser() {
   return id;  // Return id of the user from the FPS
 }
 
+void enrollScanFeedback() {
+  // Blink amber (busy) LED and make a sound to signify a scan has been taken and the user can remove their finger
+  int sound[] = {NOTE_C3, NOTE_E3};
+  int duration[] = {2, 2};
+  play(buzzer, 2, sound, duration);
+  digitalWrite(busyLED, LOW);
+  delay(100);
+  digitalWrite(busyLED, HIGH);
+}
+
 bool enrollUser() {
   // Enroll a new fingerprint for the scanner. Returns true if successful. Returns false if timed out or error.
 
@@ -176,7 +187,7 @@ bool enrollUser() {
   int iret = 0;
   if (bret != false) {
     // Successful first scan
-    goodFeedback();
+    enrollScanFeedback();  //goodFeedback();
     Serial.println("Remove finger");
     fps.Enroll1(); 
     while(fps.IsPressFinger() == true) delay(100);
@@ -191,7 +202,7 @@ bool enrollUser() {
     bret = fps.CaptureFinger(true);
     if (bret != false) {
       // Successful second scan
-      goodFeedback();
+      enrollScanFeedback();  //goodFeedback();
       Serial.println("Remove finger");
       fps.Enroll2();
       while(fps.IsPressFinger() == true) delay(100);
@@ -206,15 +217,12 @@ bool enrollUser() {
       bret = fps.CaptureFinger(true);
       if (bret != false) {
         // Successful third scan
-        goodFeedback();
+        enrollScanFeedback();  //goodFeedback();
         Serial.println("Remove finger");
         iret = fps.Enroll3();
         if (iret == 0) {
           // All scans successful
-          //goodFeedback();
-          digitalWrite(greenLED, HIGH);
-          play(buzzer, arraySize(startDuration), startSound, startDuration);
-          digitalWrite(greenLED, LOW);
+          goodFeedback();
           Serial.println("Enrolling Successful");
         }
         else {

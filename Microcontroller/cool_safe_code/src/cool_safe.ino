@@ -129,6 +129,16 @@ int identifyUser() {
   return id;  // Return id of the user from the FPS
 }
 
+void enrollScanFeedback() {
+  // Blink amber (busy) LED and make a sound to signify a scan has been taken and the user can remove their finger
+  int sound[] = {NOTE_C3, NOTE_E3};
+  int duration[] = {2, 2};
+  play(buzzer, 2, sound, duration);
+  digitalWrite(busyLED, LOW);
+  delay(100);
+  digitalWrite(busyLED, HIGH);
+}
+
 bool enrollUser() {
   // Enroll a new fingerprint for the scanner. Returns true if successful. Returns false if timed out or error.
 
@@ -161,7 +171,7 @@ bool enrollUser() {
   int iret = 0;
   if (bret != false) {
     // Successful first scan
-    goodFeedback();
+    enrollScanFeedback();  //goodFeedback();
     Serial.println("Remove finger");
     fps.Enroll1(); 
     while(fps.IsPressFinger() == true) delay(100);
@@ -176,7 +186,7 @@ bool enrollUser() {
     bret = fps.CaptureFinger(true);
     if (bret != false) {
       // Successful second scan
-      goodFeedback();
+      enrollScanFeedback();  //goodFeedback();
       Serial.println("Remove finger");
       fps.Enroll2();
       while(fps.IsPressFinger() == true) delay(100);
@@ -191,15 +201,12 @@ bool enrollUser() {
       bret = fps.CaptureFinger(true);
       if (bret != false) {
         // Successful third scan
-        goodFeedback();
+        enrollScanFeedback();  //goodFeedback();
         Serial.println("Remove finger");
         iret = fps.Enroll3();
         if (iret == 0) {
           // All scans successful
-          //goodFeedback();
-          digitalWrite(greenLED, HIGH);
-          play(buzzer, arraySize(startDuration), startSound, startDuration);
-          digitalWrite(greenLED, LOW);
+          goodFeedback();
           Serial.println("Enrolling Successful");
         }
         else {
