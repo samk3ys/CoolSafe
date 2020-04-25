@@ -58,7 +58,7 @@ const uint8_t disableUser = 0x43;      // C. remove user from group of authorize
 const uint8_t enableUser  = 0x44;      // D. add a disabled user to the group of authorized users
 const uint8_t editUser    = 0x45;      // E. change user name or other property
 // Operation function prototypes
-bool addUser(uint8_t id);
+bool addUser(void);
 bool removeUser(uint8_t id);
 bool deauthorizeUser(uint8_t id);
 bool authorizeUser(uint8_t id);
@@ -434,11 +434,11 @@ bool enrollUser() {
   return true;  // exit w/ success
 }
 
-void addUser() {
+bool addUser(void) {
   // Add a new user and enroll their fingerprint
   // Return 0 if success, 1 if there's an error
   bool success = enrollUser();  // Add fingerprint to FPS memory and MCU EEPROM
-  //return success;
+  return success;
 }
 
 bool removeUser(uint8_t id) {
