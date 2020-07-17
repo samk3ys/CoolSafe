@@ -28,7 +28,6 @@ void authWrite(int id, int value);
 void nameWrite(int id, String name);
 void enrollScanFeedback();
 bool enrollUser();
-void addUser();
 void LEDsequence();
 void setup();
 void loop();
@@ -81,7 +80,7 @@ const uint8_t disableUser = 0x43;      // C. remove user from group of authorize
 const uint8_t enableUser  = 0x44;      // D. add a disabled user to the group of authorized users
 const uint8_t editUser    = 0x45;      // E. change user name or other property
 // Operation function prototypes
-bool addUser(uint8_t id);
+bool addUser(void);
 bool removeUser(uint8_t id);
 bool deauthorizeUser(uint8_t id);
 bool authorizeUser(uint8_t id);
@@ -101,7 +100,7 @@ void onDataReceived(const uint8_t* data, size_t len, const BlePeerDevice& peer, 
   uint8_t operationID = data[0];
   //uint8_t userID = data[1];
   storedID = data[1];
-  bool error;  // Tracks if there's an error in executing an op. Initialized to 0 = no error
+  bool error = false;  // Tracks if there's an error in executing an op. Initialized to 0 = no error
 
   switch (operationID) {
     case newUser:
@@ -457,11 +456,11 @@ bool enrollUser() {
   return true;  // exit w/ success
 }
 
-void addUser() {
+bool addUser(void) {
   // Add a new user and enroll their fingerprint
   // Return 0 if success, 1 if there's an error
   bool success = enrollUser();  // Add fingerprint to FPS memory and MCU EEPROM
-  //return success;
+  return success;
 }
 
 bool removeUser(uint8_t id) {
@@ -549,7 +548,7 @@ void setup() {
   //fps.SetLED(false);
   pinMode(buzzer, OUTPUT);      // sound buzzer, not necessary for using tone()
   pinMode(relay, OUTPUT);       // signal to relay for switching solenoid
-  pinMode(keySwitch, INPUT);    // electro-mechanical switch w/ a key
+  pinMode(keySwitch, INPUT_PULLUP);    // electro-mechanical switch w/ a key
   pinMode(greenLED, OUTPUT);    // green access permitted LED
   pinMode(busyLED, OUTPUT);     // amber registration mode LED
   pinMode(redLED, OUTPUT);      // red access denied LED
@@ -583,17 +582,18 @@ void loop() {
   }
   
   // Check for users trying to access using the electro-mechanical tumbler lock switch
-  if (digitalRead(keySwitch) == HIGH && keySwitchFlag == false) {     // Key switch turned on
-    delay(300);
-    if (digitalRead(keySwitch) == LOW) {  // Enter registration mode manually by flicking the switch on and off quickly      
+  if (digitalRead(keySwitch) == LOW && keySwitchFlag == false) {     // Key switch turned on
+    delay(250);
+    if (digitalRead(keySwitch) == HIGH) {  // Enter registration mode manually by flicking the switch on and off quickly      
       enrollUser();
     }
     else {  // normal use of switch to open lock-bin
-      openBin();                      // Allow access. Includes good feedback
+      //openBin();                      // Allow access. Includes good feedback
+      goodFeedback();                 // Only need feedback for 2nd PCB onward b/c switch directly connects 12V to solenoid
       keySwitchFlag = true;           // Set flag so we don't unlock again before turning the key off
     }
   } 
-  else if (digitalRead(keySwitch) == LOW && keySwitchFlag == true) {  // Key switch turned off
+  else if (digitalRead(keySwitch) == HIGH && keySwitchFlag == true) {  // Key switch turned off
     keySwitchFlag = false;          // Reset flag so the key can be used again
   }
   
@@ -620,6 +620,7 @@ void loop() {
       default:  // no-op or unrecognized
         ;
     }
+    Serial.printlnf("Operation %d returned %d", operation, error);
     operation = noOP; // reset operation so we don't loop
   }
 
